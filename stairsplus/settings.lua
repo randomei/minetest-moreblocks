@@ -13,16 +13,13 @@ stairsplus.settings = {
 
 	default_align_style = s:get("stairsplus.default_align_style") or "user",
 
-	basic_shapes = string.split(s:get("stairsplus.common_shapes") or table.concat({
-		"micro_8", "slab_8", "stair", "stair_inner", "stair_outer",
-	}, ","), ","),
-	common_shapes = string.split(s:get("stairsplus.common_shapes") or table.concat({
-		"micro_8", "panel_8", "slab_1", "slab_8", "stair", "stair_inner", "stair_outer",
-		"slope", "slope_half", "slope_half_raised", "slope_inner", "slope_inner_cut", "slope_inner_half",
-		"slope_inner_cut_half", "slope_inner_half_raised", "slope_inner_cut_half_raised", "slope_outer",
-		"slope_outer_cut", "slope_cut", "slope_outer_half", "slope_outer_cut_half", "slope_outer_half_raised",
-		"slope_outer_cut_half_raised",
-	}, ","), ","),
+	basic_shapes = (s:get("stairsplus.common_shapes") or "micro_8,slab_8,stair,stair_inner,stair_outer"):split()
+,
+	common_shapes = (s:get("stairsplus.common_shapes") or
+		"micro_8,panel_8,slab_1,slab_8,stair,stair_inner,stair_outer,slope,slope_half,slope_half_raised,slope_inner," ..
+		"slope_inner_cut,slope_inner_half,slope_inner_cut_half,slope_inner_half_raised,slope_inner_cut_half_raised," ..
+		"slope_outer,slope_outer_cut,slope_cut,slope_outer_half,slope_outer_cut_half,slope_outer_half_raised," ..
+		"slope_outer_cut_half_raised"):split(),
 
 	legacy_mode = s:get_bool("stairsplus.legacy_mode", true),
 	legacy_place_mechanic = s:get_bool("stairsplus.legacy_place_mechanic", true),
