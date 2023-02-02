@@ -1,4 +1,4 @@
-local table_set_all = moreblocks.util.table_set_all
+local table_set_all = futil.table.set_all
 
 moreblocks.resources.textures = {
 	desert_stone = "[combine:16x16^[noalpha^[colorize:#85513e",

@@ -649,5 +649,6 @@ stds.moreblocks_legacy_recipes = {
 	globals = {
 	},
 	read_globals = {
+		"fmod",
 	},
 }

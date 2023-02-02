@@ -650,6 +650,7 @@ stds.stairs = {
 		"stairs",
 	},
 	read_globals = {
+		"fmod",
 		"stairsplus",
 	},
 }

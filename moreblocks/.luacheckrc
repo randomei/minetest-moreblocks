@@ -651,6 +651,8 @@ stds.moreblocks = {
 	},
 	read_globals = {
 		"default",
+		"fmod",
+		"futil",
 		"stairs",
 		"stairsplus",
 	},

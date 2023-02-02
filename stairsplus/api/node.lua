@@ -1,8 +1,8 @@
 -- for registering variants of a specific node
 local api = stairsplus.api
 
-local table_set_all = stairsplus.util.table_set_all
-local table_sort_keys = stairsplus.util.table_sort_keys
+local table_set_all = futil.table.set_all
+local table_sort_keys = futil.table.sort_keys
 
 local S = stairsplus.S
 
@@ -28,35 +28,41 @@ local function check_node_validity(node_def, meta)
 	end
 
 	local drawtype = node_def.drawtype
-	if not meta.ignore_drawtype and (
-		drawtype == "airlike" or
-		drawtype == "liquid" or
-		drawtype == "flowingliquid" or
-		drawtype == "torchlike" or
-		drawtype == "signlike" or
-		drawtype == "plantlike" or
-		drawtype == "firelike" or
-		drawtype == "fencelike" or
-		drawtype == "raillike" or
-		drawtype == "nodebox" or
-		drawtype == "mesh" or
-		drawtype == "plantlike_rooted"
-	) then
+	if
+		not meta.ignore_drawtype
+		and (
+			drawtype == "airlike"
+			or drawtype == "liquid"
+			or drawtype == "flowingliquid"
+			or drawtype == "torchlike"
+			or drawtype == "signlike"
+			or drawtype == "plantlike"
+			or drawtype == "firelike"
+			or drawtype == "fencelike"
+			or drawtype == "raillike"
+			or drawtype == "nodebox"
+			or drawtype == "mesh"
+			or drawtype == "plantlike_rooted"
+		)
+	then
 		error(("cannot register %q w/ drawtype %q w/ stairsplus"):format(node_def.name, drawtype))
 	end
 
 	local paramtype2 = node_def.paramtype2
-	if not meta.ignore_paramtype2 and (
-		paramtype2 == "flowingliquid" or
-		paramtype2 == "wallmounted" or
-		paramtype2 == "leveled" or
-		paramtype2 == "degrotate" or
-		paramtype2 == "meshoptions" or
-		paramtype2 == "color" or
-		paramtype2 == "colorwallmounted" or
-		paramtype2 == "glasslikeliquidlevel" or
-		paramtype2 == "colordegrotate"
-	) then
+	if
+		not meta.ignore_paramtype2
+		and (
+			paramtype2 == "flowingliquid"
+			or paramtype2 == "wallmounted"
+			or paramtype2 == "leveled"
+			or paramtype2 == "degrotate"
+			or paramtype2 == "meshoptions"
+			or paramtype2 == "color"
+			or paramtype2 == "colorwallmounted"
+			or paramtype2 == "glasslikeliquidlevel"
+			or paramtype2 == "colordegrotate"
+		)
+	then
 		error(("cannot register %q w/ paramtype2 %q w/ stairsplus"):format(node_def.name, paramtype2))
 	end
 end
@@ -120,7 +126,7 @@ function api.register_single(node, shape, overrides, meta)
 		overlay_tiles = node_def.overlay_tiles,
 		use_texture_alpha = node_def.use_texture_alpha,
 		color = node_def.color,
-		palette = node_def.palette,  -- for coloredfacedir
+		palette = node_def.palette, -- for coloredfacedir
 		stack_max = node_def.stack_max,
 		sounds = node_def.sounds,
 		is_ground_content = node_def.is_ground_content,
@@ -130,17 +136,19 @@ function api.register_single(node, shape, overrides, meta)
 		climbable = node_def.climbable,
 		move_resistance = node_def.move_resistance,
 
-		on_place = function(...) return api.on_place(...) end,
+		on_place = function(...)
+			return api.on_place(...)
+		end,
 	}
 
 	-- see-through nodes tend to look better if we just use the first tile
 	if (node_def.drawtype or ""):match("glass") then
 		if #def.tiles > 1 then
-			def.tiles = {def.tiles[1]}
+			def.tiles = { def.tiles[1] }
 		end
 
 		if def.overlay_tiles and #def.overlay_tiles > 1 then
-			def.overlay_tiles = {def.overlay_tiles[1]}
+			def.overlay_tiles = { def.overlay_tiles[1] }
 		end
 	end
 
@@ -156,7 +164,6 @@ function api.register_single(node, shape, overrides, meta)
 				def.drop = item
 			end
 		end
-
 	elseif node_def.drop and type(node_def.drop) == "string" then
 		local item = api.get_schema_recipe_item(node_def.drop, shape)
 		if item then
@@ -165,8 +172,12 @@ function api.register_single(node, shape, overrides, meta)
 	end
 
 	if not meta.allow_override_groups and overrides.groups then
-		stairsplus.log("warning", "removing group overrides from %s (was %s, will be %s)",
-			shaped_name, minetest.write_json(overrides.groups), minetest.write_json(def.groups)
+		stairsplus.log(
+			"warning",
+			"removing group overrides from %s (was %s, will be %s)",
+			shaped_name,
+			minetest.write_json(overrides.groups),
+			minetest.write_json(def.groups)
 		)
 		overrides.groups = nil
 	end
@@ -221,10 +232,7 @@ function api.register_single(node, shape, overrides, meta)
 	if shape_def.aliases then
 		local mod, name = node:match("^([^:]+):(.*)$")
 		for _, alias in ipairs(shape_def.aliases) do
-			minetest.register_alias(
-				("%s:%s"):format(mod, alias:format(name)),
-				shaped_name
-			)
+			minetest.register_alias(("%s:%s"):format(mod, alias:format(name)), shaped_name)
 		end
 	end
 
@@ -242,7 +250,7 @@ function api.register_single(node, shape, overrides, meta)
 	api.node_by_shaped_node[node] = node
 	api.shape_by_shaped_node[node] = "node"
 
-	table.insert(api.registered_singles, {node, shaped_name})
+	table.insert(api.registered_singles, { node, shaped_name })
 
 	for _, func in ipairs(api.registered_on_register_singles) do
 		func(node, shaped_name)
@@ -302,10 +310,8 @@ function api.get_schema_recipe_item(node, shape_or_item)
 
 	if api.registered_shapes[name] then
 		name = api.format_name(node, name)
-
 	elseif name == "node" then
 		name = node
-
 	elseif not name:match(":") then
 		return
 	end

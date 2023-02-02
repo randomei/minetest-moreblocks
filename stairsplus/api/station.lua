@@ -2,8 +2,8 @@
 
 local api = stairsplus.api
 
-local has_metadata = stairsplus.util.has_metadata
-local resolve_aliases = stairsplus.util.resolve_aliases
+local item_has_metadata = stairsplus.util.item_has_metadata
+local resolve_itemstack = futil.resolve_itemstack
 
 local default_stack_max = tonumber(minetest.settings:get("default_stack_max")) or 99
 
@@ -64,20 +64,20 @@ end
 
 local function fix_aliases(inv)
 	local input = inv:get_stack("stairsplus:input", 1)
-	input:set_name(resolve_aliases(input:get_name()))
+	input:set_name(resolve_itemstack(input):get_name())
 	inv:set_stack("stairsplus:input", 1, input)
 
 	local micro = inv:get_stack("stairsplus:micro", 1)
-	micro:set_name(resolve_aliases(micro:get_name()))
+	micro:set_name(resolve_itemstack(micro):get_name())
 	inv:set_stack("stairsplus:micro", 1, micro)
 
 	local recycle = inv:get_stack("stairsplus:recycle", 1)
-	recycle:set_name(resolve_aliases(recycle:get_name()))
+	recycle:set_name(resolve_itemstack(recycle):get_name())
 	inv:set_stack("stairsplus:recycle", 1, recycle)
 
 	for i = 1, inv:get_size("stairsplus:output") do
 		local output = inv:get_stack("stairsplus:output", i)
-		output:set_name(resolve_aliases(output:get_name()))
+		output:set_name(resolve_itemstack(output):get_name())
 		inv:set_stack("stairsplus:output", i, output)
 	end
 end
@@ -107,9 +107,9 @@ function station.update_inventory(meta, inv, taken_stack)
 	local recycle_cost = station.get_cost(recycle_stack:get_name())
 
 	local total_value = (
-		(input_stack:get_count() * input_cost) +
-		(micro_stack:get_count() * micro_cost) +
-		(recycle_stack:get_count() * recycle_cost)
+		(input_stack:get_count() * input_cost)
+		+ (micro_stack:get_count() * micro_cost)
+		+ (recycle_stack:get_count() * recycle_cost)
 	)
 
 	if taken_stack then
@@ -121,8 +121,8 @@ function station.update_inventory(meta, inv, taken_stack)
 
 	local micronode = api.get_micronode(node)
 
-	inv:set_stack("stairsplus:input", 1, ItemStack({name = node, count = new_blocks}))
-	inv:set_stack("stairsplus:micro", 1, ItemStack({name = micronode, count = new_micros}))
+	inv:set_stack("stairsplus:input", 1, ItemStack({ name = node, count = new_blocks }))
+	inv:set_stack("stairsplus:micro", 1, ItemStack({ name = micronode, count = new_micros }))
 	inv:set_stack("stairsplus:recycle", 1, ItemStack())
 
 	if total_value == 0 then
@@ -145,7 +145,7 @@ function station.update_inventory(meta, inv, taken_stack)
 				local count = math.min(stack_max, math.floor(total_value / shape_def.eighths))
 				local stack
 				if count > 0 then
-					stack = ItemStack({name = shaped_node, count = count})
+					stack = ItemStack({ name = shaped_node, count = count })
 				else
 					stack = ""
 				end
@@ -172,13 +172,13 @@ function station.allow_inventory_put(meta, inv, listname, index, stack, player)
 		return 0
 	end
 
-	if has_metadata(stack) then
+	if item_has_metadata(stack) then
 		return 0
 	end
 
-	local to_put_node = resolve_aliases(stack:get_name())
-	local node = api.get_node_of_shaped_node(to_put_node)
-	local shape = api.get_shape_of_shaped_node(to_put_node)
+	local to_put_name = resolve_itemstack(stack):get_name()
+	local node = api.get_node_of_shaped_node(to_put_name)
+	local shape = api.get_shape_of_shaped_node(to_put_name)
 
 	if not (node and shape) then
 		return 0
@@ -190,10 +190,10 @@ function station.allow_inventory_put(meta, inv, listname, index, stack, player)
 	local micro_stack = inv:get_stack("stairsplus:micro", 1)
 
 	if current_node and node ~= current_node then
-		if (
-			(input_stack:is_empty() and listname == "stairsplus:micro") or
-			(micro_stack:is_empty() and listname == "stairsplus:input")
-		) then
+		if
+			(input_stack:is_empty() and listname == "stairsplus:micro")
+			or (micro_stack:is_empty() and listname == "stairsplus:input")
+		then
 			return stack:get_count()
 		else
 			return 0
@@ -201,7 +201,7 @@ function station.allow_inventory_put(meta, inv, listname, index, stack, player)
 	end
 
 	local count = stack:get_count()
-	local cost = station.get_cost(to_put_node)
+	local cost = station.get_cost(to_put_name)
 
 	local current_value = 8 * input_stack:get_count() + micro_stack:get_count()
 	local max_value = 8 * ItemStack(node):get_stack_max() + 7
@@ -236,7 +236,6 @@ function station.initialize_metadata(meta, inv, shape_groups, build_formspec, up
 
 	if meta:get_int("max_offered") ~= 0 then
 		meta:set_int("stairsplus:max_offered", meta:get_int("max_offered"))
-
 	elseif meta:get_int("stairsplus:max_offered") == 0 then
 		meta:set_int("stairsplus:max_offered", default_stack_max)
 	end
@@ -262,7 +261,7 @@ function station.initialize_inventory(inv, shape_groups)
 	inv:set_size("stairsplus:output", output_size)
 
 	-- get rid of old lists
-	for _, listname in ipairs({"input", "micro", "recycle", "output"}) do
+	for _, listname in ipairs({ "input", "micro", "recycle", "output" }) do
 		if inv:get_size(listname) > 0 then
 			inv:set_list(("stairsplus:%s"):format(listname), inv:get_list(listname))
 			inv:set_size(listname, 0)
@@ -300,50 +299,48 @@ function api.register_station(name, def)
 	def.update_metadata = nil
 
 	def.after_place_node = def.after_place_node or station.after_place_node
-	def.on_construct = def.on_construct or
-		function(pos)
+	def.on_construct = def.on_construct
+		or function(pos)
 			return station.on_construct(pos, shape_groups, build_formspec, update_metadata)
 		end
 
-	def.can_dig = def.can_dig or
-		function(pos, player)
+	def.can_dig = def.can_dig
+		or function(pos, player)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			return station.can_dig(meta, inv, player)
 		end
 
-	def.on_receive_fields = def.on_receive_fields or
-		function(pos, formname, fields, sender)
+	def.on_receive_fields = def.on_receive_fields
+		or function(pos, formname, fields, sender)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			return station.on_receive_fields(
-				meta, inv, formname, fields, sender, build_formspec, update_metadata
-			)
+			return station.on_receive_fields(meta, inv, formname, fields, sender, build_formspec, update_metadata)
 		end
 
-	def.allow_metadata_inventory_move = def.allow_metadata_inventory_move or
-		function(pos, from_list, from_index, to_list, to_index, count, player)
+	def.allow_metadata_inventory_move = def.allow_metadata_inventory_move
+		or function(pos, from_list, from_index, to_list, to_index, count, player)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			return station.allow_inventory_move(meta, inv, from_list, from_index, to_list, to_index, count, player)
 		end
 
-	def.allow_metadata_inventory_put = def.allow_metadata_inventory_put or
-		function(pos, listname, index, stack, player)
+	def.allow_metadata_inventory_put = def.allow_metadata_inventory_put
+		or function(pos, listname, index, stack, player)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			return station.allow_inventory_put(meta, inv, listname, index, stack, player)
 		end
 
-	def.on_metadata_inventory_put = def.on_metadata_inventory_put or
-		function(pos, listname, index, stack, player)
+	def.on_metadata_inventory_put = def.on_metadata_inventory_put
+		or function(pos, listname, index, stack, player)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			return station.on_inventory_put(meta, inv, listname, index, stack, player, update_metadata)
 		end
 
-	def.on_metadata_inventory_take = def.on_metadata_inventory_take or
-		function(pos, listname, index, stack, player)
+	def.on_metadata_inventory_take = def.on_metadata_inventory_take
+		or function(pos, listname, index, stack, player)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			return station.on_inventory_take(meta, inv, listname, index, stack, player, update_metadata)

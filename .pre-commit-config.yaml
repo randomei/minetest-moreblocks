@@ -5,12 +5,17 @@ repos:
       - id: fix-byte-order-marker
       - id: end-of-file-fixer
       - id: trailing-whitespace
-
       - id: mixed-line-ending
         args: [ --fix=lf ]
 
   - repo: local
     hooks:
+      - id: stylua
+        name: stylua
+        language: system
+        entry: stylua
+        pass_filenames: true
+        types: [ file, lua ]
       - id: luacheck_invsaw
         name: luacheck_invsaw
         language: system

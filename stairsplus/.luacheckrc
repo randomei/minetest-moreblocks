@@ -651,5 +651,7 @@ stds.stairsplus = {
 	},
 	read_globals = {
 		"default",
+		"fmod",
+		"futil",
 	},
 }

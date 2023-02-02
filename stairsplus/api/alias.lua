@@ -1,6 +1,6 @@
 local api = stairsplus.api
 
-local table_is_empty = stairsplus.util.table_is_empty
+local table_is_empty = futil.table.is_empty
 
 function api.register_alias_shape(old_node, new_node, shape)
 	local old_shaped_node = api.format_name(old_node, shape)

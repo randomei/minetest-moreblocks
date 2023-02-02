@@ -650,6 +650,7 @@ stds.invsaw = {
 		"invsaw",
 	},
 	read_globals = {
+		"fmod",
 		"stairsplus",
 		"unified_inventory",
 	},

@@ -3,13 +3,6 @@ if not minetest.settings:get_bool("moreblocks_legacy_recipes.enabled", false) th
 	return
 end
 
---[[
-More Blocks: redefinitions of default stuff
-
-Copyright © 2011-2020 Hugo Locurcio and contributors.
-Licensed under the zlib license. See LICENSE.md for more information.
---]]
-
 local modname = minetest.get_current_modname()
 
 -- Redefine some of the default crafting recipes to be more productive
@@ -25,7 +18,7 @@ local reconstruct_internal_craft = function(recipe)
 	local width = recipe.width
 	for idx, item in pairs(recipe.items) do
 		local row = math.ceil(idx / width)
-		local col = idx - (row-1)*width
+		local col = idx - (row - 1) * width
 		recp[row][col] = item
 	end
 	return recp
@@ -55,9 +48,10 @@ local change_recipe_amount = function(product, recipe, func)
 	redo.output = ("%s %d"):format(product, newamount)
 	minetest.register_craft(redo)
 
-	minetest.log("action", ("[MOD]%s: recipe for %s production: %d => %d"):format(
-		modname, product, oldamount, newamount
-	))
+	minetest.log(
+		"action",
+		("[MOD]%s: recipe for %s production: %d => %d"):format(modname, product, oldamount, newamount)
+	)
 end
 
 local increase_craft_production = function(product, func)
@@ -90,10 +84,30 @@ local increase_craft_production_table = function(map_table)
 end
 
 increase_craft_production_table({
-	{ function(n) return n:match('^default:sign_wall') end, function(old) return old + 1 end },
-	{ function(n) return n == 'default:paper' end, function(old) return old*4 end },
-	{ function(n) return n:match('^carts:.*rail$') or n:match('^default:.*rail$') end,
-	  function(old) return old + old/2 end },
+	{
+		function(n)
+			return n:match("^default:sign_wall")
+		end,
+		function(old)
+			return old + 1
+		end,
+	},
+	{
+		function(n)
+			return n == "default:paper"
+		end,
+		function(old)
+			return old * 4
+		end,
+	},
+	{
+		function(n)
+			return n:match("^carts:.*rail$") or n:match("^default:.*rail$")
+		end,
+		function(old)
+			return old + old / 2
+		end,
+	},
 })
 
 minetest.register_craft({

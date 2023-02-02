@@ -3,13 +3,12 @@ local circular_saw = stairsplus.api.circular_saw
 local api = stairsplus.api
 local station = api.station
 
-local get_location_string = stairsplus.util.get_location_string
+local get_location_string = futil.get_location_string
 
 local S = stairsplus.S
 local F = minetest.formspec_escape
 
 local formspec_style = stairsplus.resources.formspec_style
-
 
 function circular_saw.build_formspec(meta, inv)
 	local inv_location = get_location_string(inv)
@@ -58,7 +57,7 @@ function circular_saw.build_formspec(meta, inv)
 end
 
 function circular_saw.update_metadata(meta, inv)
-	local parts = {S("Circular Saw")}
+	local parts = { S("Circular Saw") }
 
 	local owner = meta:get_string("owner")
 	if owner ~= "" then
@@ -82,28 +81,28 @@ api.register_station("stairsplus:circular_saw", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.4, -0.5, -0.4, -0.25, 0.25, -0.25}, -- Leg
-			{0.25, -0.5, 0.25, 0.4, 0.25, 0.4}, -- Leg
-			{-0.4, -0.5, 0.25, -0.25, 0.25, 0.4}, -- Leg
-			{0.25, -0.5, -0.4, 0.4, 0.25, -0.25}, -- Leg
-			{-0.5, 0.25, -0.5, 0.5, 0.375, 0.5}, -- Tabletop
-			{-0.01, 0.4375, -0.125, 0.01, 0.5, 0.125}, -- Saw blade (top)
-			{-0.01, 0.375, -0.1875, 0.01, 0.4375, 0.1875}, -- Saw blade (bottom)
-			{-0.25, -0.0625, -0.25, 0.25, 0.25, 0.25}, -- Motor case
+			{ -0.4, -0.5, -0.4, -0.25, 0.25, -0.25 }, -- Leg
+			{ 0.25, -0.5, 0.25, 0.4, 0.25, 0.4 }, -- Leg
+			{ -0.4, -0.5, 0.25, -0.25, 0.25, 0.4 }, -- Leg
+			{ 0.25, -0.5, -0.4, 0.4, 0.25, -0.25 }, -- Leg
+			{ -0.5, 0.25, -0.5, 0.5, 0.375, 0.5 }, -- Tabletop
+			{ -0.01, 0.4375, -0.125, 0.01, 0.5, 0.125 }, -- Saw blade (top)
+			{ -0.01, 0.375, -0.1875, 0.01, 0.4375, 0.1875 }, -- Saw blade (bottom)
+			{ -0.25, -0.0625, -0.25, 0.25, 0.25, 0.25 }, -- Motor case
 		},
 	},
 	tiles = {
 		"stairsplus_circular_saw_top.png",
 		"stairsplus_circular_saw_bottom.png",
-		"stairsplus_circular_saw_side.png"
+		"stairsplus_circular_saw_side.png",
 	},
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
-	groups = {choppy = 2, oddly_breakable_by_hand = 2},
+	groups = { choppy = 2, oddly_breakable_by_hand = 2 },
 	sounds = stairsplus.resources.sounds.wood,
 
-	shape_groups = {"legacy"},
+	shape_groups = { "legacy" },
 	build_formspec = circular_saw.build_formspec,
 	update_metadata = circular_saw.update_metadata,
 })
@@ -114,20 +113,20 @@ if stairsplus.settings.circular_saw_crafting and cm.steel_ingot then
 	minetest.register_craft({
 		output = "stairsplus:circular_saw",
 		recipe = {
-			{"", cm.steel_ingot, ""},
-			{"group:wood", "group:wood", "group:wood"},
-			{"group:wood", "", "group:wood"},
-		}
+			{ "", cm.steel_ingot, "" },
+			{ "group:wood", "group:wood", "group:wood" },
+			{ "group:wood", "", "group:wood" },
+		},
 	})
 end
 
 minetest.register_lbm({
 	label = "Upgrade legacy saws",
 	name = "stairsplus:replace_legacy_saws",
-	nodenames = {"stairsplus:circular_saw"},
+	nodenames = { "stairsplus:circular_saw" },
 	run_at_every_load = false,
 	action = function(pos, node)
 		local def = minetest.registered_nodes[node.name]
-		def.on_construct(pos, {"legacy"}, circular_saw.build_formspec, circular_saw.update_metadata)
+		def.on_construct(pos, { "legacy" }, circular_saw.build_formspec, circular_saw.update_metadata)
 	end,
 })

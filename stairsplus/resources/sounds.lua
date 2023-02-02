@@ -1,4 +1,4 @@
-local table_set_all = stairsplus.util.table_set_all
+local table_set_all = futil.table.set_all
 
 stairsplus.resources.sounds = {}
 

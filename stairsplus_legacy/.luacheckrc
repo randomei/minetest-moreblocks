@@ -651,6 +651,7 @@ stds.stairsplus_legacy = {
 	},
 	read_globals = {
 		"default",
+		"fmod",
 		"stairs",
 		"stairsplus",
 	},
