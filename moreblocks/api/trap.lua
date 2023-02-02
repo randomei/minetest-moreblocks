@@ -37,7 +37,7 @@ function moreblocks.api.register_trap(itemstring, base, redef)
 		minetest.register_craft({
 			output = itemstring,
 			type = "shapeless",
-			recipe = {cm.trap_material, base},
+			recipe = { cm.trap_material, base },
 		})
 	end
 end

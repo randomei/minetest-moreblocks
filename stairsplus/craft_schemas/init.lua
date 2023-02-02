@@ -1,4 +1,3 @@
-
 stairsplus.dofile("craft_schemas", "micro_8_all")
 stairsplus.dofile("craft_schemas", "other")
 stairsplus.dofile("craft_schemas", "slopes")

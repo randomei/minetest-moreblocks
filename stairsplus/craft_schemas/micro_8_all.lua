@@ -6,7 +6,7 @@ for shape, shape_def in pairs(api.registered_shapes) do
 		register_craft_schema({
 			type = "shapeless",
 			output = ("micro_8 %i"):format(shape_def.eighths),
-			recipe = {shape},
+			recipe = { shape },
 		})
 	end
 end

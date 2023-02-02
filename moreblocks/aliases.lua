@@ -84,20 +84,20 @@ minetest.register_lbm({
 	},
 	action = function(pos, node)
 		if node.name == "moreblocks:wood_tile_left" then
-			minetest.set_node(pos, {name = "moreblocks:wood_tile_offset", param2 = 1})
+			minetest.set_node(pos, { name = "moreblocks:wood_tile_offset", param2 = 1 })
 		elseif node.name == "moreblocks:wood_tile_down" then
-			minetest.set_node(pos, {name = "moreblocks:wood_tile_offset", param2 = 2})
+			minetest.set_node(pos, { name = "moreblocks:wood_tile_offset", param2 = 2 })
 		elseif node.name == "moreblocks:wood_tile_right" then
-			minetest.set_node(pos, {name = "moreblocks:wood_tile_offset", param2 = 3})
+			minetest.set_node(pos, { name = "moreblocks:wood_tile_offset", param2 = 3 })
 		else
 			-- wood_tile_flipped
-			minetest.set_node(pos, {name = "moreblocks:wood_tile", param2 = 1})
+			minetest.set_node(pos, { name = "moreblocks:wood_tile", param2 = 1 })
 		end
 		moreblocks.log("action", "LBM replaced %s at %s", node.name, minetest.pos_to_string(pos))
 	end,
 })
 
-local horizontal_tree_convert_facedir = {7, 12, 9, 18}
+local horizontal_tree_convert_facedir = { 7, 12, 9, 18 }
 if cm.tree then
 	minetest.register_lbm({
 		name = "moreblocks:reduce_horizontal_tree_redundancy",
@@ -109,7 +109,7 @@ if cm.tree then
 			node.param2 = node.param2 < 3 and node.param2 or 0
 			minetest.set_node(pos, {
 				name = node.name,
-				param2 = horizontal_tree_convert_facedir[node.param2 + 1]
+				param2 = horizontal_tree_convert_facedir[node.param2 + 1],
 			})
 			moreblocks.log("action", "LBM replaced %s at %s", node.name, minetest.pos_to_string(pos))
 		end,
@@ -127,7 +127,7 @@ if cm.jungle_tree then
 			node.param2 = node.param2 < 3 and node.param2 or 0
 			minetest.set_node(pos, {
 				name = node.name,
-				param2 = horizontal_tree_convert_facedir[node.param2 + 1]
+				param2 = horizontal_tree_convert_facedir[node.param2 + 1],
 			})
 			moreblocks.log("action", "LBM replaced %s at %s", node.name, minetest.pos_to_string(pos))
 		end,

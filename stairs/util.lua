@@ -22,7 +22,6 @@ function util.get_stair_images(images, worldaligntex)
 				name = image,
 				backface_culling = true,
 			}
-
 		else
 			stair_image = table.copy(image)
 			if stair_image.backface_culling == nil then

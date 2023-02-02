@@ -9,27 +9,27 @@ local nodeboxes = {
 	stair = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.0, 0.5},
-			{-0.5, 0.0, 0.0, 0.5, 0.5, 0.5},
+			{ -0.5, -0.5, -0.5, 0.5, 0.0, 0.5 },
+			{ -0.5, 0.0, 0.0, 0.5, 0.5, 0.5 },
 		},
 	},
 	slab = {
 		type = "fixed",
-		fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+		fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 },
 	},
 	stair_inner = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.0, 0.5},
-			{-0.5, 0.0, 0.0, 0.5, 0.5, 0.5},
-			{-0.5, 0.0, -0.5, 0.0, 0.5, 0.0},
+			{ -0.5, -0.5, -0.5, 0.5, 0.0, 0.5 },
+			{ -0.5, 0.0, 0.0, 0.5, 0.5, 0.5 },
+			{ -0.5, 0.0, -0.5, 0.0, 0.5, 0.0 },
 		},
 	},
 	stair_outer = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.0, 0.5},
-			{-0.5, 0.0, 0.0, 0.0, 0.5, 0.5},
+			{ -0.5, -0.5, -0.5, 0.5, 0.0, 0.5 },
+			{ -0.5, 0.0, 0.0, 0.0, 0.5, 0.5 },
 		},
 	},
 }
@@ -70,17 +70,25 @@ function legacy.register_stair(subname, recipeitem, groups, images, description,
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
 
-	register_generic(":stairs:stair_" .. subname, recipeitem, new_groups, images, description, sounds,
-		worldaligntex, nodeboxes.stair)
+	register_generic(
+		":stairs:stair_" .. subname,
+		recipeitem,
+		new_groups,
+		images,
+		description,
+		sounds,
+		worldaligntex,
+		nodeboxes.stair
+	)
 
 	if recipeitem and minetest.registered_nodes[recipeitem] then
 		-- Recipe matches appearence in inventory
 		minetest.register_craft({
 			output = "stairs:stair_" .. subname .. " 8",
 			recipe = {
-				{"", "", recipeitem},
-				{"", recipeitem, recipeitem},
-				{recipeitem, recipeitem, recipeitem},
+				{ "", "", recipeitem },
+				{ "", recipeitem, recipeitem },
+				{ recipeitem, recipeitem, recipeitem },
 			},
 		})
 
@@ -88,8 +96,8 @@ function legacy.register_stair(subname, recipeitem, groups, images, description,
 		minetest.register_craft({
 			output = recipeitem .. " 3",
 			recipe = {
-				{"stairs:stair_" .. subname, "stairs:stair_" .. subname},
-				{"stairs:stair_" .. subname, "stairs:stair_" .. subname},
+				{ "stairs:stair_" .. subname, "stairs:stair_" .. subname },
+				{ "stairs:stair_" .. subname, "stairs:stair_" .. subname },
 			},
 		})
 
@@ -97,7 +105,7 @@ function legacy.register_stair(subname, recipeitem, groups, images, description,
 		local baseburntime = minetest.get_craft_result({
 			method = "fuel",
 			width = 1,
-			items = {recipeitem}
+			items = { recipeitem },
 		}).time
 
 		if baseburntime > 0 then
@@ -110,7 +118,6 @@ function legacy.register_stair(subname, recipeitem, groups, images, description,
 	end
 end
 
-
 -- Register slab
 -- Node will be called stairs:slab_<subname>
 
@@ -118,14 +125,22 @@ function legacy.register_slab(subname, recipeitem, groups, images, description, 
 	local new_groups = table.copy(groups)
 	new_groups.slab = 1
 
-	register_generic(":stairs:slab_" .. subname, recipeitem, new_groups, images, description, sounds,
-		worldaligntex, nodeboxes.slab)
+	register_generic(
+		":stairs:slab_" .. subname,
+		recipeitem,
+		new_groups,
+		images,
+		description,
+		sounds,
+		worldaligntex,
+		nodeboxes.slab
+	)
 
 	if recipeitem and minetest.registered_nodes[recipeitem] then
 		minetest.register_craft({
 			output = "stairs:slab_" .. subname .. " 6",
 			recipe = {
-				{recipeitem, recipeitem, recipeitem},
+				{ recipeitem, recipeitem, recipeitem },
 			},
 		})
 
@@ -133,8 +148,8 @@ function legacy.register_slab(subname, recipeitem, groups, images, description, 
 		minetest.register_craft({
 			output = recipeitem,
 			recipe = {
-				{"stairs:slab_" .. subname},
-				{"stairs:slab_" .. subname},
+				{ "stairs:slab_" .. subname },
+				{ "stairs:slab_" .. subname },
 			},
 		})
 
@@ -142,7 +157,7 @@ function legacy.register_slab(subname, recipeitem, groups, images, description, 
 		local baseburntime = minetest.get_craft_result({
 			method = "fuel",
 			width = 1,
-			items = {recipeitem}
+			items = { recipeitem },
 		}).time
 		if baseburntime > 0 then
 			minetest.register_craft({
@@ -157,9 +172,16 @@ end
 -- Register inner stair
 -- Node will be called stairs:stair_inner_<subname>
 
-function legacy.register_stair_inner(subname, recipeitem, groups, images, description, sounds, worldaligntex,
-									 full_description)
-
+function legacy.register_stair_inner(
+	subname,
+	recipeitem,
+	groups,
+	images,
+	description,
+	sounds,
+	worldaligntex,
+	full_description
+)
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
 	if full_description then
@@ -168,16 +190,24 @@ function legacy.register_stair_inner(subname, recipeitem, groups, images, descri
 		description = "Inner " .. description
 	end
 
-	register_generic(":stairs:stair_inner_" .. subname, recipeitem, new_groups, images, description, sounds,
-		worldaligntex, nodeboxes.stair_inner)
+	register_generic(
+		":stairs:stair_inner_" .. subname,
+		recipeitem,
+		new_groups,
+		images,
+		description,
+		sounds,
+		worldaligntex,
+		nodeboxes.stair_inner
+	)
 
 	if recipeitem and minetest.registered_nodes[recipeitem] then
 		minetest.register_craft({
 			output = "stairs:stair_inner_" .. subname .. " 7",
 			recipe = {
-				{"", recipeitem, ""},
-				{recipeitem, "", recipeitem},
-				{recipeitem, recipeitem, recipeitem},
+				{ "", recipeitem, "" },
+				{ recipeitem, "", recipeitem },
+				{ recipeitem, recipeitem, recipeitem },
 			},
 		})
 
@@ -185,7 +215,7 @@ function legacy.register_stair_inner(subname, recipeitem, groups, images, descri
 		local baseburntime = minetest.get_craft_result({
 			method = "fuel",
 			width = 1,
-			items = {recipeitem}
+			items = { recipeitem },
 		}).time
 
 		if baseburntime > 0 then
@@ -198,12 +228,19 @@ function legacy.register_stair_inner(subname, recipeitem, groups, images, descri
 	end
 end
 
-
 -- Register outer stair
 -- Node will be called stairs:stair_outer_<subname>
 
-function legacy.register_stair_outer(subname, recipeitem, groups, images, description, sounds, worldaligntex,
-									 full_description)
+function legacy.register_stair_outer(
+	subname,
+	recipeitem,
+	groups,
+	images,
+	description,
+	sounds,
+	worldaligntex,
+	full_description
+)
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
 
@@ -213,15 +250,23 @@ function legacy.register_stair_outer(subname, recipeitem, groups, images, descri
 		description = "Outer " .. description
 	end
 
-	register_generic(":stairs:stair_outer_" .. subname, recipeitem, new_groups, images, description, sounds,
-		worldaligntex, nodeboxes.stair_outer)
+	register_generic(
+		":stairs:stair_outer_" .. subname,
+		recipeitem,
+		new_groups,
+		images,
+		description,
+		sounds,
+		worldaligntex,
+		nodeboxes.stair_outer
+	)
 
 	if recipeitem and minetest.registered_nodes[recipeitem] then
 		minetest.register_craft({
 			output = "stairs:stair_outer_" .. subname .. " 6",
 			recipe = {
-				{"", recipeitem, ""},
-				{recipeitem, recipeitem, recipeitem},
+				{ "", recipeitem, "" },
+				{ recipeitem, recipeitem, recipeitem },
 			},
 		})
 
@@ -229,7 +274,7 @@ function legacy.register_stair_outer(subname, recipeitem, groups, images, descri
 		local baseburntime = minetest.get_craft_result({
 			method = "fuel",
 			width = 1,
-			items = {recipeitem}
+			items = { recipeitem },
 		}).time
 
 		if baseburntime > 0 then

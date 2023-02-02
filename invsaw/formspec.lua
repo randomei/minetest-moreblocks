@@ -19,7 +19,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 
 		return true
-
 	elseif station.on_receive_fields(meta, inv, formname, fields, player) then
 		if invsaw.allow_use_saw(player) then
 			invsaw.show_formspec(player)

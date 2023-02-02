@@ -1,4 +1,4 @@
-local farming_nodes = {"straw"}
+local farming_nodes = { "straw" }
 for _, name in pairs(farming_nodes) do
 	local node = ("farming:%s"):format(name)
 	if minetest.registered_nodes[node] then

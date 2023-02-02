@@ -18,15 +18,19 @@ function stairs.register_stair(subname, node, groups, tiles, description, sounds
 		if legacy_stairs_without_recipeitem then
 			legacy.register_stair(subname, node, groups, tiles, description, sounds, worldaligntex)
 			return
-
 		else
-			error(f("attempt to register stairs for unknown node %q. " ..
-				"set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.", node))
+			error(
+				f(
+					"attempt to register stairs for unknown node %q. "
+						.. "set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.",
+					node
+				)
+			)
 		end
 	end
 
 	local meta = {
-		align_style = worldaligntex and "world" or default_align_style
+		align_style = worldaligntex and "world" or default_align_style,
 	}
 
 	if is_legacy_drawtype(node) then
@@ -52,15 +56,19 @@ function stairs.register_slab(subname, node, groups, tiles, description, sounds,
 		if legacy_stairs_without_recipeitem then
 			legacy.register_slab(subname, node, groups, tiles, description, sounds, worldaligntex)
 			return
-
 		else
-			error(f("attempt to register stairs for unknown node %q. " ..
-				"set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.", node))
+			error(
+				f(
+					"attempt to register stairs for unknown node %q. "
+						.. "set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.",
+					node
+				)
+			)
 		end
 	end
 
 	local meta = {
-		align_style = worldaligntex and "world" or default_align_style
+		align_style = worldaligntex and "world" or default_align_style,
 	}
 	if is_legacy_drawtype(node) then
 		meta.ignore_drawtype = true
@@ -83,18 +91,30 @@ function stairs.register_stair_inner(subname, node, groups, tiles, description, 
 	if not minetest.registered_nodes[node] then
 		-- registering a stair for a node that doesn't exist
 		if legacy_stairs_without_recipeitem then
-			legacy.register_stair_inner(subname, node, groups, tiles, description, sounds, worldaligntex,
-				full_description)
+			legacy.register_stair_inner(
+				subname,
+				node,
+				groups,
+				tiles,
+				description,
+				sounds,
+				worldaligntex,
+				full_description
+			)
 			return
-
 		else
-			error(f("attempt to register stairs for unknown node %q. " ..
-				"set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.", node))
+			error(
+				f(
+					"attempt to register stairs for unknown node %q. "
+						.. "set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.",
+					node
+				)
+			)
 		end
 	end
 
 	local meta = {
-		align_style = worldaligntex and "world" or default_align_style
+		align_style = worldaligntex and "world" or default_align_style,
 	}
 	if is_legacy_drawtype(node) then
 		meta.ignore_drawtype = true
@@ -117,18 +137,30 @@ function stairs.register_stair_outer(subname, node, groups, tiles, description, 
 	if not minetest.registered_nodes[node] then
 		-- registering a stair for a node that doesn't exist
 		if legacy_stairs_without_recipeitem then
-			legacy.register_stair_outer(subname, node, groups, tiles, description, sounds, worldaligntex,
-				full_description)
+			legacy.register_stair_outer(
+				subname,
+				node,
+				groups,
+				tiles,
+				description,
+				sounds,
+				worldaligntex,
+				full_description
+			)
 			return
-
 		else
-			error(f("attempt to register stairs for unknown node %q. " ..
-				"set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.", node))
+			error(
+				f(
+					"attempt to register stairs for unknown node %q. "
+						.. "set `stairs.legacy_stairs_without_recipeitem = true` in minetest.conf to enable this behavior.",
+					node
+				)
+			)
 		end
 	end
 
 	local meta = {
-		align_style = worldaligntex and "world" or default_align_style
+		align_style = worldaligntex and "world" or default_align_style,
 	}
 	if is_legacy_drawtype(node) then
 		meta.ignore_drawtype = true
@@ -147,12 +179,38 @@ function stairs.register_stair_outer(subname, node, groups, tiles, description, 
 	minetest.register_alias(("stairs:stair_outer_%s"):format(subname), api.format_name(node, "stair_outer"))
 end
 
-function stairs.register_stair_and_slab(subname, recipeitem, groups, images, desc_stair, desc_slab, sounds,
-										worldaligntex, desc_stair_inner, desc_stair_outer)
-        stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, worldaligntex)
-        stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, worldaligntex)
-        stairs.register_stair_inner(subname, recipeitem, groups, images, desc_stair, sounds, worldaligntex,
-			desc_stair_inner)
-        stairs.register_stair_outer(subname, recipeitem, groups, images, desc_stair, sounds, worldaligntex,
-			desc_stair_outer)
+function stairs.register_stair_and_slab(
+	subname,
+	recipeitem,
+	groups,
+	images,
+	desc_stair,
+	desc_slab,
+	sounds,
+	worldaligntex,
+	desc_stair_inner,
+	desc_stair_outer
+)
+	stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, worldaligntex)
+	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, worldaligntex)
+	stairs.register_stair_inner(
+		subname,
+		recipeitem,
+		groups,
+		images,
+		desc_stair,
+		sounds,
+		worldaligntex,
+		desc_stair_inner
+	)
+	stairs.register_stair_outer(
+		subname,
+		recipeitem,
+		groups,
+		images,
+		desc_stair,
+		sounds,
+		worldaligntex,
+		desc_stair_outer
+	)
 end

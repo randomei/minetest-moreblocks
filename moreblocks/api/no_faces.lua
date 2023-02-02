@@ -3,7 +3,7 @@ local S = moreblocks.S
 function moreblocks.api.register_no_faces(itemstring, base, redef)
 	local def = table.copy(minetest.registered_nodes[base])
 
-	def.tiles = {def.tiles[3]}
+	def.tiles = { def.tiles[3] }
 	def.description = S("No-faces @1", def.description)
 
 	if def.short_description then
@@ -20,9 +20,9 @@ function moreblocks.api.register_no_faces(itemstring, base, redef)
 	minetest.register_craft({
 		output = itemstring .. " 9",
 		recipe = {
-			{base, base, base},
-			{base, base, base},
-			{base, base, base},
-		}
+			{ base, base, base },
+			{ base, base, base },
+			{ base, base, base },
+		},
 	})
 end

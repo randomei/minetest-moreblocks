@@ -62,7 +62,7 @@ local glass = {
 for _, name in ipairs(glass) do
 	local node = ("default:%s"):format(name)
 	if minetest.registered_nodes[node] then
-		stairsplus_legacy.register_legacy(node, nil, {ignore_paramtype2 = true})
+		stairsplus_legacy.register_legacy(node, nil, { ignore_paramtype2 = true })
 		stairsplus.api.register_alias_all(("moreblocks:%s"):format(name), node)
 		stairsplus.api.register_alias_all(("stairs:%s"):format(name), node)
 	end
@@ -101,9 +101,9 @@ if minetest.registered_nodes["default:desert_stone"] and minetest.registered_nod
 end
 
 stairsplus.api.register_crafts_for_shapes({
-        type = "fuel",
-        recipe = "group:tree",
-        burntime = 30,
+	type = "fuel",
+	recipe = "group:tree",
+	burntime = 30,
 })
 
 if minetest.registered_nodes["default:tree"] then
@@ -147,9 +147,9 @@ if minetest.registered_nodes["default:jungletree"] then
 end
 
 stairsplus.api.register_crafts_for_shapes({
-        type = "fuel",
-        recipe = "group:wood",
-        burntime = 7,
+	type = "fuel",
+	recipe = "group:wood",
+	burntime = 7,
 })
 
 if minetest.registered_nodes["default:wood"] then

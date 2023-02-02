@@ -13,10 +13,7 @@ local sound_leaves = moreblocks.resources.sounds.leaves
 local sound_metal = moreblocks.resources.sounds.metal
 
 local function is_glasslike(def)
-	return #def.tiles > 1 and (
-		def.drawtype == "glasslike_framed" or
-			def.drawtype == "glasslike_framed_optional"
-	)
+	return #def.tiles > 1 and (def.drawtype == "glasslike_framed" or def.drawtype == "glasslike_framed_optional")
 end
 
 local function register_stairs(name, def)
@@ -26,7 +23,7 @@ local function register_stairs(name, def)
 	-- This makes them easier to see
 	if is_glasslike(def) then
 		def = table.copy(def)
-		def.tiles = {def.tiles[1]}
+		def.tiles = { def.tiles[1] }
 	end
 
 	if moreblocks.has.stairsplus then
@@ -35,7 +32,6 @@ local function register_stairs(name, def)
 		else
 			stairsplus.api.register_group(itemstring, "common")
 		end
-
 	elseif moreblocks.has.stairs then
 		stairs.register_stair_and_slab(
 			("%s_%s"):format(modname, name),
@@ -51,12 +47,12 @@ local function register_stairs(name, def)
 end
 
 local function tile_tiles(tex)
-	return {tex, tex, tex, tex, tex .. "^[transformR90", tex .. "^[transformR90"}
+	return { tex, tex, tex, tex, tex .. "^[transformR90", tex .. "^[transformR90" }
 end
 
 local function register_with_stairs(name, def)
 	local itemstring = ("%s:%s"):format(modname, name)
-	def.tiles = def.tiles or {("%s_%s.png"):format(modname, name)}
+	def.tiles = def.tiles or { ("%s_%s.png"):format(modname, name) }
 	minetest.register_node(itemstring, def)
 	minetest.register_alias(name, itemstring)
 	register_stairs(name, def)
@@ -64,7 +60,7 @@ end
 
 local function register_no_stairs(name, def)
 	local itemstring = ("%s:%s"):format(modname, name)
-	def.tiles = def.tiles or {("%s_%s.png"):format(modname, name)}
+	def.tiles = def.tiles or { ("%s_%s.png"):format(modname, name) }
 	minetest.register_node(itemstring, def)
 	minetest.register_alias(name, itemstring)
 end
@@ -94,7 +90,7 @@ end
 
 register_with_stairs("wood_tile", {
 	description = S("Wooden Tile"),
-	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3},
+	groups = { wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3 },
 	is_ground_content = false,
 	paramtype2 = "facedir",
 	place_param2 = 0,
@@ -104,17 +100,17 @@ register_with_stairs("wood_tile", {
 
 register_with_stairs("wood_tile_center", {
 	description = S("Centered Wooden Tile"),
-	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3},
+	groups = { wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3 },
 	is_ground_content = false,
 	tiles = {
-		("%s^moreblocks_wood_tile_center.png"):format(t.wood)
+		("%s^moreblocks_wood_tile_center.png"):format(t.wood),
 	},
 	sounds = sound_wood,
 })
 
 register_with_stairs("wood_tile_full", {
 	description = S("Full Wooden Tile"),
-	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3},
+	groups = { wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3 },
 	is_ground_content = false,
 	tiles = tile_tiles("moreblocks_wood_tile_full.png"),
 	sounds = sound_wood,
@@ -124,17 +120,17 @@ register_no_stairs("wood_tile_offset", {
 	description = S("Offset Wooden Tile"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3},
+	groups = { wood = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 3 },
 	is_ground_content = false,
 	tiles = {
-		("%s^moreblocks_wood_tile_offset.png"):format(t.wood)
+		("%s^moreblocks_wood_tile_offset.png"):format(t.wood),
 	},
 	sounds = sound_wood,
 })
 
 register_with_stairs("circle_stone_bricks", {
 	description = S("Circle Stone Bricks"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -143,7 +139,7 @@ register_with_stairs("grey_bricks", {
 	description = S("Stone Bricks"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {cracky = 3},
+	groups = { cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -152,7 +148,7 @@ register_with_stairs("coal_stone_bricks", {
 	description = S("Coal Stone Bricks"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -161,14 +157,14 @@ register_with_stairs("iron_stone_bricks", {
 	description = S("Iron Stone Bricks"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("stone_tile", {
 	description = S("Stone Tile"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -179,44 +175,44 @@ register_with_stairs("split_stone_tile", {
 	place_param2 = 0,
 	tiles = {
 		"moreblocks_split_stone_tile_top.png",
-		"moreblocks_split_stone_tile.png"
+		"moreblocks_split_stone_tile.png",
 	},
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("checker_stone_tile", {
 	description = S("Checker Stone Tile"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("tar", {
 	description = S("Tar"),
-	groups = {cracky = 2, tar_block = 1},
+	groups = { cracky = 2, tar_block = 1 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("dirt_compressed", {
 	description = S("Compressed Dirt"),
-	groups = {crumbly = 2},
+	groups = { crumbly = 2 },
 	is_ground_content = false,
 	sounds = sound_dirt,
 })
 
 register_with_stairs("cobble_compressed", {
 	description = S("Compressed Cobblestone"),
-	groups = {cracky = 1},
+	groups = { cracky = 1 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("desert_cobble_compressed", {
 	description = S("Compressed Desert Cobblestone"),
-	groups = {cracky = 1},
+	groups = { cracky = 1 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -225,7 +221,7 @@ register_with_stairs("plankstone", {
 	description = S("Plankstone"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {cracky = 3},
+	groups = { cracky = 3 },
 	is_ground_content = false,
 	tiles = tile_tiles("moreblocks_plankstone.png"),
 	sounds = sound_stone,
@@ -236,13 +232,13 @@ register_with_stairs("iron_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		("%s^[colorize:#DEDEDE"):format(t.glass),
-		("%s^[colorize:#DEDEDE"):format(t.glass_detail)
+		("%s^[colorize:#DEDEDE"):format(t.glass_detail),
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -251,13 +247,13 @@ register_with_stairs("coal_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		("%s^[colorize:#828282"):format(t.glass),
-		("%s^[colorize:#828282"):format(t.glass_detail)
+		("%s^[colorize:#828282"):format(t.glass_detail),
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -266,13 +262,13 @@ register_with_stairs("clean_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		"moreblocks_clean_glass.png",
-		"moreblocks_clean_glass_detail.png"
+		"moreblocks_clean_glass_detail.png",
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -280,14 +276,14 @@ register_with_stairs("cactus_brick", {
 	description = S("Cactus Brick"),
 	paramtype2 = "facedir",
 	place_param2 = 0,
-	groups = {cracky = 3},
+	groups = { cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("cactus_checker", {
 	description = S("Cactus Checker"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	tiles = tile_tiles(("%s^moreblocks_cactus_checker.png"):format(t.stone)),
 	sounds = sound_stone,
@@ -302,9 +298,9 @@ register_no_stairs("empty_shelf", {
 		t.wood,
 		t.wood,
 		"moreblocks_empty_shelf.png",
-		"moreblocks_empty_shelf.png"
+		"moreblocks_empty_shelf.png",
 	},
-	groups = {choppy = 3, oddly_breakable_by_hand = 2, flammable = 3},
+	groups = { choppy = 3, oddly_breakable_by_hand = 2, flammable = 3 },
 	is_ground_content = false,
 	sounds = sound_wood,
 	furnace_burntime = 15,
@@ -312,14 +308,14 @@ register_no_stairs("empty_shelf", {
 
 register_with_stairs("coal_stone", {
 	description = S("Coal Stone"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
 
 register_with_stairs("iron_stone", {
 	description = S("Iron Stone"),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -327,7 +323,7 @@ register_with_stairs("iron_stone", {
 register_with_stairs("coal_checker", {
 	description = S("Coal Checker"),
 	tiles = tile_tiles(("%s^moreblocks_coal_checker.png"):format(t.stone)),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -335,7 +331,7 @@ register_with_stairs("coal_checker", {
 register_with_stairs("iron_checker", {
 	description = S("Iron Checker"),
 	tiles = tile_tiles(("%s^moreblocks_iron_checker.png"):format(t.stone)),
-	groups = {stone = 1, cracky = 3},
+	groups = { stone = 1, cracky = 3 },
 	is_ground_content = false,
 	sounds = sound_stone,
 })
@@ -345,14 +341,14 @@ register_with_stairs("glow_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		("%s^[colorize:#E9CD61"):format(t.glass),
-		("%s^[colorize:#E9CD61"):format(t.glass_detail)
+		("%s^[colorize:#E9CD61"):format(t.glass_detail),
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	light_source = 11,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -361,14 +357,14 @@ register_with_stairs("super_glow_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		("%s^[colorize:#FFFF78"):format(t.glass),
-		("%s^[colorize:#FFFF78"):format(t.glass_detail)
+		("%s^[colorize:#FFFF78"):format(t.glass_detail),
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	light_source = minetest.LIGHT_MAX,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -377,14 +373,14 @@ register_with_stairs("clean_glow_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		"moreblocks_clean_glass.png^[colorize:#E9CD61",
-		"moreblocks_clean_glass_detail.png^[colorize:#E9CD61"
+		"moreblocks_clean_glass_detail.png^[colorize:#E9CD61",
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	light_source = 11,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
@@ -393,20 +389,20 @@ register_with_stairs("clean_super_glow_glass", {
 	drawtype = "glasslike_framed_optional",
 	tiles = {
 		"moreblocks_clean_glass.png^[colorize:#FFFF78",
-		"moreblocks_clean_glass_detail.png^[colorize:#FFFF78"
+		"moreblocks_clean_glass_detail.png^[colorize:#FFFF78",
 	},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	light_source = minetest.LIGHT_MAX,
-	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	groups = { cracky = 3, oddly_breakable_by_hand = 3 },
 	sounds = sound_glass,
 })
 
 register_with_stairs("copperpatina", {
 	description = S("Copper Patina Block"),
-	groups = {cracky = 1, level = 2},
+	groups = { cracky = 1, level = 2 },
 	is_ground_content = false,
 	sounds = sound_metal,
 })
@@ -422,8 +418,8 @@ register_no_stairs("rope", {
 	paramtype2 = "wallmounted",
 	walkable = false,
 	climbable = true,
-	selection_box = {type = "wallmounted", },
-	groups = {snappy = 3, flammable = 2},
+	selection_box = { type = "wallmounted" },
+	groups = { snappy = 3, flammable = 2 },
 	sounds = sound_leaves,
 })
 

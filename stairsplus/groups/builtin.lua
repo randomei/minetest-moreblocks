@@ -1,4 +1,3 @@
-
 stairsplus.api.register_passthrough_groups({
 	"not_in_creative_inventory",
 	"dig_immediate",

@@ -1,6 +1,20 @@
-local dyes = {"white", "grey", "black", "red", "yellow", "green", "cyan",
-              "blue", "magenta", "orange", "violet", "brown", "pink",
-              "dark_grey", "dark_green"}
+local dyes = {
+	"white",
+	"grey",
+	"black",
+	"red",
+	"yellow",
+	"green",
+	"cyan",
+	"blue",
+	"magenta",
+	"orange",
+	"violet",
+	"brown",
+	"pink",
+	"dark_grey",
+	"dark_green",
+}
 
 for _, name in ipairs(dyes) do
 	local node = ("wool:%s"):format(name)

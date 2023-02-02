@@ -51,10 +51,8 @@ function api.build_groups(node, shape)
 	for group, value in pairs(node_def.groups) do
 		if api.passthrough_groups[group] then
 			groups[group] = value
-
 		elseif api.scaling_groups[group] then
 			groups[group] = (shape_def.eighths / 8) * value
-
 		elseif not api.ignore_groups[group] then
 			groups[shape_def.name_format:format(group)] = value
 		end

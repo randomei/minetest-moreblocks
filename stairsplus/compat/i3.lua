@@ -23,7 +23,7 @@ local function on_register_single(node, shaped_name)
 	i3.register_craft({
 		type = "stairsplus:circular_saw",
 		result = shaped_name,
-		items = {node},
+		items = { node },
 	})
 
 	local micronode = api.get_micronode(node)

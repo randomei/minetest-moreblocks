@@ -1,4 +1,3 @@
-
 stairsplus.resources.formspec_style = ""
 
 if stairsplus.has.default then

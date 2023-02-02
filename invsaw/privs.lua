@@ -23,7 +23,6 @@ if minetest.registered_privileges[priv] then
 	local def = minetest.registered_privileges[priv]
 	def.on_grant = override_on_priv_change(def.on_grant)
 	def.on_revoke = override_on_priv_change(def.on_revoke)
-
 else
 	minetest.register_privilege(priv, {
 		description = "Allow use of the circular saw in inventory",
@@ -38,7 +37,6 @@ if minetest.registered_privileges[creative_priv] then
 	local def = minetest.registered_privileges[creative_priv]
 	def.on_grant = override_on_priv_change(def.on_grant)
 	def.on_revoke = override_on_priv_change(def.on_revoke)
-
 else
 	minetest.register_privilege(creative_priv, {
 		description = "Allow use of the inventory saw creatively",

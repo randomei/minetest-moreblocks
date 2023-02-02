@@ -18,21 +18,21 @@ unified_inventory.register_category("stairsplus:cuttable", {
 	symbol = "stairsplus:circular_saw",
 	label = "Cuttable in the circular saw",
 	index = 0,
-	items = {}
+	items = {},
 })
 
 unified_inventory.register_category("stairsplus:cut_node", {
 	symbol = "stairsplus:circular_saw",
 	label = "Nodes cut in the circular saw",
 	index = 0,
-	items = {}
+	items = {},
 })
 
 local function on_register_single(node, shaped_name)
 	unified_inventory.register_craft({
 		output = shaped_name,
 		type = "stairsplus:circular_saw",
-		items = {node},
+		items = { node },
 		width = 1,
 	})
 

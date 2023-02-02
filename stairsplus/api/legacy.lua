@@ -4,9 +4,9 @@ local legacy_mode = stairsplus.settings.legacy_mode
 local legacy_place_mechanic = stairsplus.settings.legacy_place_mechanic
 
 if legacy_place_mechanic then
-	local wall_right_dirmap = {9, 18, 7, 12}
-	local wall_left_dirmap = {11, 16, 5, 14}
-	local ceil_dirmap = {20, 23, 22, 21}
+	local wall_right_dirmap = { 9, 18, 7, 12 }
+	local wall_left_dirmap = { 11, 16, 5, 14 }
+	local ceil_dirmap = { 20, 23, 22, 21 }
 
 	function api.on_place(itemstack, placer, pointed_thing)
 		if not minetest.is_player(placer) then
@@ -69,10 +69,10 @@ if legacy_place_mechanic then
 			use_ceilmap = use_ceilmap or (wallmounted > 1 and sneak and face_off.y > 0)
 
 			if use_wallmap then
-				local left = (p2 == 0 and face_off.x < 0) or
-					(p2 == 1 and face_off.z > 0) or
-					(p2 == 2 and face_off.x > 0) or
-					(p2 == 3 and face_off.z < 0)
+				local left = (p2 == 0 and face_off.x < 0)
+					or (p2 == 1 and face_off.z > 0)
+					or (p2 == 2 and face_off.x > 0)
+					or (p2 == 3 and face_off.z < 0)
 				if aux then
 					left = not left
 				end
@@ -92,7 +92,6 @@ if legacy_place_mechanic then
 
 		return minetest.item_place(itemstack, placer, pointed_thing, p2)
 	end
-
 else
 	api.on_place = minetest.item_place
 end
@@ -100,7 +99,6 @@ end
 function api.scale_light(light_source, shape_def)
 	if not light_source or light_source == 0 then
 		return 0
-
 	elseif legacy_mode then
 		return light_source - 1
 	end

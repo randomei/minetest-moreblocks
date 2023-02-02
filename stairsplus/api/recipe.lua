@@ -43,7 +43,6 @@ local function verify_schema(schema)
 				table.insert(problems, ("don't know how to handle craft item %q"):format(item))
 			end
 		end
-
 	else
 		for _, row in ipairs(schema.recipe) do
 			for _, item in ipairs(row) do
@@ -80,7 +79,6 @@ local function has_the_right_shapes(schema, shapes)
 				return false
 			end
 		end
-
 	elseif schema.type == "shaped" or schema.type == nil then
 		for _, row in ipairs(schema.recipe) do
 			for _, item in ipairs(row) do
@@ -113,7 +111,6 @@ local function register_for_schema(node, schema)
 		for i, item in ipairs(recipe.recipe) do
 			recipe.recipe[i] = api.get_schema_recipe_item(node, item)
 		end
-
 	elseif recipe.type == "shaped" or recipe.type == nil then
 		for _, row in ipairs(recipe.recipe) do
 			for i, item in ipairs(row) do
@@ -251,10 +248,8 @@ end
 function api.register_crafts_for_shapes(recipe)
 	if recipe.type == "cooking" then
 		register_cooking_for_shapes(recipe)
-
 	elseif recipe.type == "fuel" then
 		register_fuel_for_shapes(recipe)
-
 	else
 		error(("unsupported recipe type %s"):format(recipe.type))
 	end
