@@ -46,7 +46,11 @@ For registering new shapes.
   })
   ```
   Hopefully most of the paramaters should be self explanatory. `eighths` is the number of 1/8th node
-  microblocks that the shape is "worth", i.e. how much material is used in crafting it.
+  microblocks that the shape is "worth", i.e. how much material is used in crafting it. when assigning a value to
+  `eighths`, generally 1 is the minimum, and 8 is the maximum. often, you should round to the nearest eighth
+  (`eights = round(volume * 8)`). however, sometimes shapes will form a natural complement w/ another shape to form
+  a simple volume, and you should instead choose values so that the eighths in the complements match the combined form.
+
 * `stairsplus.api.register_shape_group(shape_group, shapes)`
   Register a new shape group.
 

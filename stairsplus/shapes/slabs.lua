@@ -2,7 +2,7 @@ stairsplus.api.register_shape("slab_1", {
 	name_format = "slab_%s_1",
 	description = "@1 1/16 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 1,
+	eighths = 1, -- 1/16 nodes, complement of slab_15 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -14,7 +14,7 @@ stairsplus.api.register_shape("slab_2", {
 	name_format = "slab_%s_2",
 	description = "@1 1/8 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 1,
+	eighths = 1, -- 1/8 nodes, complement of slab_14 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -27,7 +27,7 @@ stairsplus.api.register_shape("slab_4", {
 	aliases = { "slab_%s_quarter" },
 	description = "@1 1/4 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 2,
+	eighths = 2, -- 1/4 nodes, complement of slab_12 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -40,7 +40,7 @@ stairsplus.api.register_shape("slab_8", {
 	aliases = { "slab_%s" },
 	description = "@1 1/2 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 4,
+	eighths = 4, -- 1/2 nodes
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -53,7 +53,7 @@ stairsplus.api.register_shape("slab_12", {
 	aliases = { "slab_%s_three_quarter" },
 	description = "@1 3/4 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 6,
+	eighths = 6, -- 3/4 nodes, complement of slab_4 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -65,7 +65,7 @@ stairsplus.api.register_shape("slab_14", {
 	name_format = "slab_%s_14",
 	description = "@1 7/8 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 7,
+	eighths = 7, -- 7/8 nodes, complement of slab_2 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -77,7 +77,7 @@ stairsplus.api.register_shape("slab_15", {
 	name_format = "slab_%s_15",
 	description = "@1 15/16 Slab",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 7,
+	eighths = 7, -- 15/16 nodes, complement of slab_1 to make node
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
