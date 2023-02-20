@@ -91,7 +91,7 @@ stairsplus.api.register_shape("slab_two_sides", {
 	name_format = "slab_%s_two_sides",
 	description = "@1 1/16 Slab Two Sides",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 2,
+	eighths = 1, -- 31/256 nodes
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -106,7 +106,7 @@ stairsplus.api.register_shape("slab_three_sides", {
 	name_format = "slab_%s_three_sides",
 	description = "@1 1/16 Slab Three Sides",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 3,
+	eighths = 1, -- 361/2048 nodes
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -122,7 +122,7 @@ stairsplus.api.register_shape("slab_three_sides_u", {
 	name_format = "slab_%s_three_sides_u",
 	description = "@1 1/16 Slab Three Sides U",
 	shape_groups = { slab = 1, legacy = 1 },
-	eighths = 3,
+	eighths = 1, -- 23/128 nodes
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
