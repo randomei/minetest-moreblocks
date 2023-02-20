@@ -4,6 +4,8 @@ if not stairsplus.has.unified_inventory then
 	return
 end
 
+local in_creative_inventory = stairsplus.settings.in_creative_inventory
+
 local api = stairsplus.api
 
 unified_inventory.register_craft_type("stairsplus:circular_saw", {
@@ -21,12 +23,14 @@ unified_inventory.register_category("stairsplus:cuttable", {
 	items = {},
 })
 
-unified_inventory.register_category("stairsplus:cut_node", {
-	symbol = "stairsplus:circular_saw",
-	label = "Nodes cut in the circular saw",
-	index = 0,
-	items = {},
-})
+if in_creative_inventory then
+	unified_inventory.register_category("stairsplus:cut_node", {
+		symbol = "stairsplus:circular_saw",
+		label = "Nodes cut in the circular saw",
+		index = 0,
+		items = {},
+	})
+end
 
 local function on_register_single(node, shaped_name)
 	unified_inventory.register_craft({
@@ -37,7 +41,9 @@ local function on_register_single(node, shaped_name)
 	})
 
 	unified_inventory.add_category_item("stairsplus:cuttable", node)
-	unified_inventory.add_category_item("stairsplus:cut_node", shaped_name)
+	if in_creative_inventory then
+		unified_inventory.add_category_item("stairsplus:cut_node", shaped_name)
+	end
 end
 
 for _, single in ipairs(api.registered_singles) do
