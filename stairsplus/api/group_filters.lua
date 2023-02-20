@@ -48,6 +48,10 @@ function api.build_groups(node, shape)
 
 	local shape_def = api.registered_shapes[shape]
 
+	for group, value in pairs(shape_def.groups or {}) do
+		groups[group] = value
+	end
+
 	for group, value in pairs(node_def.groups) do
 		if api.passthrough_groups[group] then
 			groups[group] = value
