@@ -49,7 +49,7 @@ for _, name in ipairs(default_nodes) do
 	if minetest.registered_nodes[node] then
 		stairsplus_legacy.register_legacy(node)
 		stairsplus.api.register_alias_all(("moreblocks:%s"):format(name), node)
-		stairsplus.api.register_alias_all(("stairs:%s"):format(name), node)
+		stairsplus.api.register_alias_group(("stairs:%s"):format(name), node, "stairs_legacy")
 	end
 end
 
@@ -64,7 +64,7 @@ for _, name in ipairs(glass) do
 	if minetest.registered_nodes[node] then
 		stairsplus_legacy.register_legacy(node, nil, { ignore_paramtype2 = true })
 		stairsplus.api.register_alias_all(("moreblocks:%s"):format(name), node)
-		stairsplus.api.register_alias_all(("stairs:%s"):format(name), node)
+		stairsplus.api.register_alias_group(("stairs:%s"):format(name), node, "stairs_legacy")
 	end
 end
 
