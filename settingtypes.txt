@@ -1,3 +1,5 @@
+[invsaw]
+
 # Will be created if it doesn't already exist
 invsaw.priv (Priv to use the inventory saw) string interact
 
@@ -7,17 +9,23 @@ invsaw.creative_priv (Priv to use the inventory saw w/out a saw item) string cre
 # The item that a normal player has to have to use the saw in inventory
 invsaw.saw_item (Saw item) string stairsplus:circular_saw
 
+[moreblocks]
+
 # whether to increase the yield of certain crafting recipes as in moreblocks 2.*
 moreblocks_legacy_recipes.enabled (Enable legacy recipes) bool false
 
 # Add a yellow outline around trap nodes, to make them visibly distinct
 moreblocks.outline_trap_nodes (Outline trap nodes) bool true
 
+[stairs]
+
 # If true, registering stairs w/out a registered recipe item will still create the stair nodes.
 # This is how the stairs mod in minetest game works currently.
 # Unfortunately, they will not be craftable.
 # By default, trying to do this will create an error.
 stairs.legacy_stairs_without_recipeitem (Allow stairs without a base node) bool false
+
+[stairsplus]
 
 # I guess if you want the saw to be creative-only?
 stairsplus.circular_saw_crafting (Allow crafting the circular saw) bool true
@@ -50,6 +58,8 @@ stairsplus.legacy_place_mechanic (use legacy place mecahnic) bool true
 
 # allows crafting shaped nodes in addition to cutting them
 stairsplus.crafting_schemata_enabled (enable crafting schemata) bool true
+
+[stairsplus_legacy]
 
 # enable registering stairsplus nodes for basic_materials
 stairsplus_legacy.basic_materials () bool true
