@@ -98,7 +98,7 @@ See moreblocks/API.md and stairsplus/API.md.
 ## moreblocks, stairsplus, stairsplus_legacy, moreblocks_legacy_recipes
 
 * © 2011-2022 Hugo Locurcio and contributors under the zlib license
-* © 2023- fluxionary under the AGPL v3+
+* © 2023- fluxionary under the LGPL v3+
 
 - unless otherwise specified, textures are licensed under
   [CC BY-SA 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/).
@@ -109,4 +109,4 @@ See moreblocks/API.md and stairsplus/API.md.
 ## invsaw
 
 * © 2022 cheapie and contributors under the zlib license
-* © 2023- fluxionary under the AGPL v3+
+* © 2023- fluxionary under the LGPL v3+
