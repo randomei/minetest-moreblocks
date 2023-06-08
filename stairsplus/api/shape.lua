@@ -1,3 +1,5 @@
+local f = string.format
+
 local api = stairsplus.api
 
 api.registered_on_register_shapes = {}
@@ -29,4 +31,18 @@ function api.register_shape_group(shape_group, shapes)
 		api.registered_shapes[shape].shape_groups[shape_group] = 1
 	end
 	api.shapes_by_group[shape_group] = shapes
+end
+
+function api.guess_shape(node_name)
+	local mod, namepart = node_name:match("^([^:]+):([^:]+)$")
+	if not (mod and namepart) then
+		return
+	end
+	for name, def in pairs(api.registered_shapes) do
+		local pattern = def.name_format:gsub("%%s", "(.*)")
+		local matched = namepart:match(pattern)
+		if matched and minetest.registered_nodes[f("%s:%s", mod, matched)] then
+			return name
+		end
+	end
 end

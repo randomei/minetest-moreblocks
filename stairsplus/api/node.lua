@@ -85,6 +85,10 @@ function api.register_single(node, shape, overrides, meta)
 
 	local shaped_name = api.format_name(node, shape)
 
+	if shape ~= "micro_8" and not api.is_whitelisted(shaped_name) then
+		return false
+	end
+
 	stairsplus.log("info", "registering %s", shaped_name)
 
 	meta = meta or {}

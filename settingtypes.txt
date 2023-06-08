@@ -59,6 +59,9 @@ stairsplus.legacy_place_mechanic (use legacy place mecahnic) bool true
 # allows crafting shaped nodes in addition to cutting them
 stairsplus.crafting_schemata_enabled (enable crafting schemata) bool true
 
+# when set to true, will only register nodes specified in $WORLD_PATH/stairsplus.whitelist
+stairsplus.whitelist_mode (whitelist mode) bool false
+
 [stairsplus_legacy]
 
 # enable registering stairsplus nodes for basic_materials
