@@ -9,6 +9,7 @@ import pymtdb
 
 
 def create_filter(stairsplus_dump: pathlib.Path):
+    print('creating filter from dump...')
     f = {}
     with stairsplus_dump.open() as fh:
         data = json.load(fh)
@@ -22,14 +23,7 @@ def create_filter(stairsplus_dump: pathlib.Path):
     return f
 
 
-def process(row):
-    data = row[0]
-    mapblock = pymtdb.MapBlockSimple.import_from_serialized(data)
-    return frozenset(mapblock.iter_nodes())
-
-
-def main(args):
-    all_nodes = set()
+def count_blocks(args):
     if args.pg_connection:
         import psycopg2
         conn = psycopg2.connect(args.pg_connection)
@@ -37,25 +31,59 @@ def main(args):
 
     else:
         import sqlite3
-        con = sqlite3.connect(args.sqlite_file, check_same_thread=False)
+        con = sqlite3.connect(args.sqlite_file)
         cur = con.cursor()
 
     cur.execute('SELECT COUNT(*) FROM blocks')
+    print('counting blocks...')
     num_blocks = cur.fetchone()[0]
+    print(f'num_blocks: {num_blocks}')
+    return num_blocks
 
-    cur.execute('SELECT data FROM blocks')
 
-    with progressbar.ProgressBar() as bar, multiprocessing.Pool() as pool:
-        for nodes in bar(pool.imap_unordered(process, cur, chunksize=10),
-                         max_value=num_blocks):
+def initializer(args):
+    global CURSOR, CHUNK_SIZE
+    CHUNK_SIZE = args.chunk_size
+    if args.pg_connection:
+        import psycopg2
+        conn = psycopg2.connect(args.pg_connection)
+        CURSOR = conn.cursor()
+
+    else:
+        import sqlite3
+        con = sqlite3.connect(args.sqlite_file)
+        CURSOR = con.cursor()
+
+
+def process(offset):
+    global CURSOR, CHUNK_SIZE
+    CURSOR.execute(f'SELECT data FROM blocks LIMIT {CHUNK_SIZE} OFFSET {offset}')
+    return frozenset(
+        node
+        for row in CURSOR
+        for node in pymtdb.MapBlockSimple.import_from_serialized(row[0]).node_names
+    )
+
+
+def create_whitelist(filter_, all_nodes):
+    print('creating whitelist')
+    return set(
+        shaped_node for shaped_node in map(filter_.get, all_nodes) if shaped_node
+    )
+
+
+def main(args):
+    filter_ = create_filter(args.stairsplus_dump)
+    num_blocks = count_blocks(args)
+    offsets = range(0, num_blocks, args.chunk_size)
+
+    all_nodes = set()
+    with progressbar.ProgressBar() as bar, multiprocessing.Pool(initializer=initializer, initargs=(args,)) as pool:
+        for nodes in bar(pool.imap_unordered(process, offsets),
+                         max_value=len(offsets)):
             all_nodes.update(nodes)
 
-    whitelist = set()
-    f = create_filter(args.stairsplus_dump)
-    for node in all_nodes:
-        shaped_node = f.get(node)
-        if shaped_node:
-            whitelist.add(shaped_node)
+    whitelist = create_whitelist(filter_, all_nodes)
 
     if args.output:
         output = args.output
@@ -63,6 +91,7 @@ def main(args):
         output = args.stairsplus_dump.parent / 'stairsplus.whitelist'
 
     with output.open('wb') as fh:
+        print(f'writing whitelist to {output!r}')
         fh.write(b'\n'.join(sorted(whitelist)))
 
 
@@ -80,6 +109,7 @@ def parse_args(args=None, namespace=None):
     g = p.add_mutually_exclusive_group(required=True)
     g.add_argument('--pg_connection', '-c')
     g.add_argument('--sqlite_file', '-s', type=existing_file)
+    p.add_argument('--chunk_size', type=int, default=64)
     p.add_argument('--output', '-o', type=pathlib.Path)
     p.add_argument('stairsplus_dump', type=existing_file)
     return p.parse_args(args=args, namespace=namespace)

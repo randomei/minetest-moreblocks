@@ -260,47 +260,28 @@ class MapBlock:
 
 class MapBlockSimple:
     def __init__(self):
-        self._flags = 0
-        self._lighting_complete = 0
-        self._timestamp = 0
-        self._nodes = []
-
-    def iter_nodes(self):
-        yield from self._nodes
+        self.node_names = []
 
     @staticmethod
     def import_from_serialized(serialized_data: bytes):
         mapblock = MapBlockSimple()
-        version = serialized_data[0]  # struct.unpack('>b', serialized_data)
+        version = serialized_data[0]
         if version != 29:
             raise RuntimeError(f'can\'t parse version {version}')
 
         stream = Stream(pyzstd.decompress(serialized_data[1:]))
-        mapblock._flags = stream.u8()
-        mapblock._lighting_complete = stream.u16()
-        mapblock._timestamp = stream.u32()
+        stream.u8()  # flags
+        stream.u16()  # lighting_complete
+        stream.u32()  # timestamp
         name_id_mapping_version = stream.u8()
         num_name_id_mappings = stream.u16()
 
         if name_id_mapping_version != 0:
             raise RuntimeError(f'can\'t grok name_id_mapping_version {name_id_mapping_version}')
 
-        name_by_id = {}
         for _ in range(num_name_id_mappings):
-            id_ = stream.u16()
+            stream.u16()  # id
             name_len = stream.u16()
-
-            name_by_id[id_] = stream.bytes(name_len)
-
-        content_width = stream.u8()
-        if content_width != 2:
-            raise RuntimeError(f'invalid content_width {content_width}')
-
-        params_width = stream.u8()
-
-        if params_width != 2:
-            raise RuntimeError(f'invalid params_width {params_width}')
-
-        mapblock._nodes = tuple(name_by_id[stream.u16()] for _ in range(MAP_BLOCKSIZE ** 3))
+            mapblock.node_names.append(stream.bytes(name_len))
 
         return mapblock
