@@ -21,3 +21,5 @@ stairsplus.dofile("circular_saw")
 stairsplus.dofile("compat", "init")
 
 stairsplus.dofile("aliases")
+
+stairsplus.dofile("whitelist_generator", "init")

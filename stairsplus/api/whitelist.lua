@@ -14,7 +14,7 @@ if s.whitelist_mode then
 	for i = 1, #items do
 		api.whitelisted[items[i]] = true
 	end
-	stairsplus.log("action", f("%s nodes whitelisted"))
+	stairsplus.log("action", f("%s nodes whitelisted", #api.whitelisted))
 end
 
 function api.is_whitelisted(name)

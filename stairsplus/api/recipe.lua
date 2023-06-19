@@ -171,31 +171,32 @@ end
 
 api.register_on_register_single(api.register_schema_crafts_for_node)
 
-local function shapes_match(a, b)
+local function get_shape_intersection(a, b)
 	local a_shapes = api.get_shapes(a)
 	local b_shapes = api.get_shapes(b)
-
-	if #a_shapes ~= #b_shapes then
-		return false
+	local filter = {}
+	for i = 1, #b_shapes do
+		filter[b_shapes[i]] = true
 	end
-
+	local intersection = {}
 	for i = 1, #a_shapes do
-		if a_shapes[i] ~= b_shapes[i] then
-			return false
+		local shape = a_shapes[i]
+		if filter[shape] then
+			intersection[#intersection + 1] = shape
 		end
 	end
-
-	return true
+	return intersection
 end
 
 local function register_cooking_for_shapes(recipe)
 	local mod, name = recipe.recipe:match("^([^:]+):(.*)$")
 
-	if mod ~= "group" and not shapes_match(recipe.output, recipe.recipe) then
-		error(("error: shapes of %s and %s do not match"):format(recipe.output, recipe.recipe))
+	local shapes
+	if mod == "group" then
+		shapes = api.get_shapes(recipe.output)
+	else
+		shapes = get_shape_intersection(recipe.output, recipe.recipe)
 	end
-
-	local shapes = api.get_shapes(recipe.output)
 
 	for _, shape in ipairs(shapes) do
 		local shape_def = api.registered_shapes[shape]

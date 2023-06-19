@@ -89,6 +89,48 @@ if the `stairsplus_legacy` mod is enabled, stairsplus nodes will automatically b
 mods, if they are available: `basic_materials`, `default`, `farming`, `gloopblocks`, `prefab`, `technic`,
 and `wool`.
 
+### stairsplus whitelist mode
+
+stairsplus can add a *lot* of nodes to the world - it comes with 49 shape variants! this can lead to big problems,
+because minetest can only handle 32767 different kinds of nodes at the same time. that means, you can at maximum
+create all possible variants for 655 distinct nodes. even fewer variations are possible if you want to use other
+mods at the same time.
+
+in order to reduce the number of registered nodes, stairsplus can be run in *whitelist mode*, which means that only
+nodes listed in a certain file (`$WORLDPATH/stairsplus.whitelist`) will actually get registered (see note 1 below).
+to enable whitelist mode, set `stairsplus.whitelist_mode = true` in minetest.conf.
+
+additionally stairsplus comes w/ tools to automatically create a whitelist for existing worlds, so that server
+operators can reap the benefits of whitelist mode without ending up w/ tons of "unknown" nodes. first, before enabling
+whitelist mode, run the `/dump_stairsplus_registered_nodes` command to generate `$WORLDPATH/stairsplus_dump.json`,
+which will be used in the next step. generating this file should be quick and painless.
+
+the next step is *not* necessarily quick and painless. you will need to run a provided python script, located at
+`moreblocks/stairsplus/whitelist_generator/pymtdb.py`. this script can only process sqlite and postgres map backends.
+additionally, this script only works w/ map serialization version 29, introduced with minetest 5.7.0. if you are
+not running 5.7.0, you will have to upgrade and migrate your database. additionally, while the script is fairly
+efficient and makes use of multiple threads, it is still slow. while postgres can handle concurrent access, if your
+server uses a sqlite backend, you will have to shut it down for the duration of the execution of this script.
+
+the script requires several non-standard python modules be installed, listed in
+`moreblocks/stairsplus/whitelist_generator/requirements.txt`.
+
+to run the script against a sqlite database, execute
+```bash
+python pymtdb.py -s $WORLDPATH/map.sqlite $WORLDPATH/stairsplus_dump.json
+```
+
+for postgres, fill in the correct connection string for your database:
+```bash
+python pymtdb.py -p "host=127.0.0.1 user=minetest password=pass dbname=minetest" $WORLDPATH/stairsplus_dump.json
+```
+
+both of these commands will generate `$WORLDPATH/stairsplus.whitelist` if successful. while running, an estimate
+of how much more time is needed for the script to complete will be provided.
+
+notes:
+1. micro_\*_8 variants are always registered, as they are fundamental to the functionality of the mod.
+
 ## for mod makers
 
 See moreblocks/API.md and stairsplus/API.md.
