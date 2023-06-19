@@ -34,8 +34,8 @@ def count_blocks(args):
         con = sqlite3.connect(args.sqlite_file)
         cur = con.cursor()
 
-    cur.execute('SELECT COUNT(*) FROM blocks')
     print('counting blocks...')
+    cur.execute('SELECT COUNT(*) FROM blocks')
     num_blocks = cur.fetchone()[0]
     print(f'num_blocks: {num_blocks}')
     return num_blocks
