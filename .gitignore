@@ -1,2 +1,5 @@
-/stairsplus/whitelist_generator/pg_connection
-/stairsplus/whitelist_generator/dump.json
+/stairsplus/scripts/dump.json
+/stairsplus/scripts/pg_connection
+/stairsplus/scripts/schems/
+/stairsplus/scripts/tmp
+/stairsplus/scripts/venv/

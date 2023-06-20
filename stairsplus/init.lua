@@ -22,4 +22,4 @@ stairsplus.dofile("compat", "init")
 
 stairsplus.dofile("aliases")
 
-stairsplus.dofile("whitelist_generator", "init")
+stairsplus.dofile("scripts", "init")

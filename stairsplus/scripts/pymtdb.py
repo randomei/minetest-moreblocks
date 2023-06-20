@@ -1,9 +1,10 @@
 # https://github.com/minetest/minetest/blob/master/doc/world_format.txt#L301
 # https://docs.python.org/3/library/struct.html
 import collections
-import struct
 
 import pyzstd
+
+from stream import StreamReader
 
 MAP_BLOCKSIZE = 16
 
@@ -16,57 +17,6 @@ def unpack_pos(packed_pos):
     zy, x = divmod(packed_pos, 16)
     z, y = divmod(zy, 16)
     return vector(x, y, z)
-
-
-class Stream:
-    def __init__(self, data: bytes):
-        self._data = data
-        self._start = 0
-
-    def u8(self) -> int:
-        sformat = '>B'
-        ssize = struct.calcsize(sformat)
-        rv = struct.unpack(sformat, self._data[self._start:self._start + ssize])
-        self._start = self._start + ssize
-        return rv[0]
-
-    def u16(self) -> int:
-        sformat = '>H'
-        ssize = struct.calcsize(sformat)
-        rv = struct.unpack(sformat, self._data[self._start:self._start + ssize])
-        self._start = self._start + ssize
-        return rv[0]
-
-    def s32(self) -> int:
-        sformat = '>i'
-        ssize = struct.calcsize(sformat)
-        rv = struct.unpack(sformat, self._data[self._start:self._start + ssize])
-        self._start = self._start + ssize
-        return rv[0]
-
-    def u32(self) -> int:
-        sformat = '>I'
-        ssize = struct.calcsize(sformat)
-        rv = struct.unpack(sformat, self._data[self._start:self._start + ssize])
-        self._start = self._start + ssize
-        return rv[0]
-
-    def bytes(self, count: int) -> bytes:
-        rv = self._data[self._start:self._start + count]
-        self._start = self._start + count
-        return rv
-
-    def inventory_bytes(self) -> bytes:
-        start_of_end = self._data.find(b'EndInventory\n', self._start)
-        if start_of_end == -1:
-            return
-        actual_end = start_of_end + len(b'EndInventory\n')
-        rv = self._data[self._start:actual_end]
-        self._start = actual_end
-        return rv
-
-    def rest(self) -> bytes:
-        return self._data[self._start:]
 
 
 class Inventory:
@@ -164,7 +114,7 @@ class MapBlock:
         if version != 29:
             raise RuntimeError(f'can\'t parse version {version}')
 
-        stream = Stream(pyzstd.decompress(serialized_data[1:]))
+        stream = StreamReader(pyzstd.decompress(serialized_data[1:]))
         mapblock._flags = stream.u8()
         mapblock._lighting_complete = stream.u16()
         mapblock._timestamp = stream.u32()
@@ -269,7 +219,7 @@ class MapBlockSimple:
         if version != 29:
             raise RuntimeError(f'can\'t parse version {version}')
 
-        stream = Stream(pyzstd.decompress(serialized_data[1:]))
+        stream = StreamReader(pyzstd.decompress(serialized_data[1:]))
         stream.u8()  # flags
         stream.u16()  # lighting_complete
         stream.u32()  # timestamp
