@@ -117,12 +117,12 @@ the script requires several non-standard python modules be installed, listed in
 
 to run the script against a sqlite database, execute
 ```bash
-python pymtdb.py -s $WORLDPATH/map.sqlite $WORLDPATH/stairsplus_dump.json
+python create_whitelist.py -s $WORLDPATH/map.sqlite $WORLDPATH/stairsplus_dump.json
 ```
 
 for postgres, fill in the correct connection string for your database:
 ```bash
-python pymtdb.py -p "host=127.0.0.1 user=minetest password=pass dbname=minetest" $WORLDPATH/stairsplus_dump.json
+python create_whitelist.py -p "host=127.0.0.1 user=minetest password=pass dbname=minetest" $WORLDPATH/stairsplus_dump.json
 ```
 
 both of these commands will generate `$WORLDPATH/stairsplus.whitelist` if successful. while running, an estimate
@@ -130,6 +130,17 @@ of how much more time is needed for the script to complete will be provided.
 
 notes:
 1. micro_\*_8 variants are always registered, as they are fundamental to the functionality of the mod.
+
+### migrating schemas
+
+stairsplus also comes with a script which can migrate blocks in minetest schemas and worldedit save files to their new
+names in stairsplus. without this, trying to load schemas saved while using old stairsplus may cause a server crash.
+
+first, create the `stairsplus_dump.json` file mentioned in whitelist mode. next, run
+
+```bash
+python translate_schems.py $WORLDPATH/stairsplus_dump.json $WORLDPATH/schems
+```
 
 ## for mod makers
 
