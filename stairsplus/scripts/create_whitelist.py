@@ -2,6 +2,7 @@ import argparse
 import json
 import multiprocessing
 import pathlib
+import time
 
 import progressbar
 
@@ -35,9 +36,10 @@ def count_blocks(args):
         cur = con.cursor()
 
     print('counting blocks...')
+    start = time.time()
     cur.execute('SELECT COUNT(*) FROM blocks')
     num_blocks = cur.fetchone()[0]
-    print(f'num_blocks: {num_blocks}')
+    print(f'num_blocks: {num_blocks} (fetched in {time.time()-start}s)')
     return num_blocks
 
 

@@ -216,6 +216,8 @@ class MapBlockSimple:
     def import_from_serialized(serialized_data: bytes):
         mapblock = MapBlockSimple()
         version = serialized_data[0]
+        if type(version) is bytes:
+            version = ord(version)
         if version != 29:
             raise RuntimeError(f'can\'t parse version {version}')
 
