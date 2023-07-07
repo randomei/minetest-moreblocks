@@ -80,7 +80,9 @@ def main(args):
     offsets = range(0, num_blocks, args.chunk_size)
 
     all_nodes = set()
-    with progressbar.ProgressBar() as bar, multiprocessing.Pool(initializer=initializer, initargs=(args,)) as pool:
+    with progressbar.ProgressBar() as bar, multiprocessing.Pool(
+        processes=args.workers, initializer=initializer, initargs=(args,)
+    ) as pool:
         for nodes in bar(pool.imap_unordered(process, offsets),
                          max_value=len(offsets)):
             all_nodes.update(nodes)
@@ -112,6 +114,7 @@ def parse_args(args=None, namespace=None):
     g.add_argument('--pg_connection', '-c')
     g.add_argument('--sqlite_file', '-s', type=existing_file)
     p.add_argument('--chunk_size', type=int, default=64)
+    p.add_argument('--workers', type=int)
     p.add_argument('--output', '-o', type=pathlib.Path)
     p.add_argument('stairsplus_dump', type=existing_file)
     return p.parse_args(args=args, namespace=namespace)
