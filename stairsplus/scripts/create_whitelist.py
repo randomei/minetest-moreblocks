@@ -1,5 +1,5 @@
 import argparse
-import json
+import math
 import multiprocessing
 import pathlib
 import time
@@ -7,105 +7,64 @@ import time
 import progressbar
 
 import pymtdb
+from whitelist_helpers import create_whitelist, write_whitelist, create_filter, count_blocks, existing_file, get_cursor, \
+    get_all_nodes
 
 
-def create_filter(stairsplus_dump: pathlib.Path):
-    print('creating filter from dump...')
-    f = {}
-    with stairsplus_dump.open() as fh:
-        data = json.load(fh)
-
-    for shaped_node in data['shaped_nodes'].keys():
-        f[shaped_node.encode()] = shaped_node.encode()
-
-    for alias, shaped_node in data['aliases'].items():
-        f[alias.encode()] = shaped_node.encode()
-
-    return f
-
-
-def count_blocks(args):
-    if args.pg_connection:
-        import psycopg2
-        conn = psycopg2.connect(args.pg_connection)
-        cur = conn.cursor()
-
-    else:
-        import sqlite3
-        con = sqlite3.connect(args.sqlite_file)
-        cur = con.cursor()
-
-    print('counting blocks...')
-    start = time.time()
-    cur.execute('SELECT COUNT(*) FROM blocks')
-    num_blocks = cur.fetchone()[0]
-    print(f'num_blocks: {num_blocks} (fetched in {time.time()-start}s)')
-    return num_blocks
-
-
-def initializer(args):
-    global CURSOR, CHUNK_SIZE
-    CHUNK_SIZE = args.chunk_size
-    if args.pg_connection:
-        import psycopg2
-        conn = psycopg2.connect(args.pg_connection)
-        CURSOR = conn.cursor()
-
-    else:
-        import sqlite3
-        con = sqlite3.connect(args.sqlite_file)
-        CURSOR = con.cursor()
-
-
-def process(offset):
-    global CURSOR, CHUNK_SIZE
-    CURSOR.execute(f'SELECT data FROM blocks LIMIT {CHUNK_SIZE} OFFSET {offset}')
-    return frozenset(
-        node
-        for row in CURSOR
-        for node in pymtdb.MapBlockSimple.import_from_serialized(row[0]).node_names
-    )
-
-
-def create_whitelist(filter_, all_nodes):
-    print('creating whitelist')
-    return set(
-        shaped_node for shaped_node in map(filter_.get, all_nodes) if shaped_node
-    )
+def process_chunk(args, offset, limit, completed, results):
+    cursor = get_cursor(args)
+    cursor.execute(f'SELECT data FROM blocks LIMIT {limit} OFFSET {offset}')
+    node_names = set()
+    i = 0
+    for i, row in enumerate(cursor, 1):
+        node_names.update(pymtdb.MapBlockSimple.import_from_serialized(row[0]).node_names)
+        if i % args.chunk_size == 0:
+            completed.value = i
+    completed.value = i
+    results.put(node_names, False)
 
 
 def main(args):
+    num_blocks, count_blocks_elapsed = count_blocks(args)  # 345104538, 13*60
+    work_size = math.ceil(num_blocks / args.workers)
+    offsets = range(0, num_blocks, work_size)
+    completeds = tuple(multiprocessing.Value('Q', 0, lock=False) for _ in range(args.workers))
+    # because we want to terminate the processes before we remove the results from the queue, use a manager
+    # see warnings in https://docs.python.org/3/library/multiprocessing.html#pipes-and-queues
+    results = multiprocessing.Manager().Queue()
+    processes = tuple(
+        multiprocessing.Process(target=process_chunk, name=f'processor {i}',
+                                args=(args, offsets[i], work_size, completeds[i], results))
+        for i in range(args.workers)
+    )
+    for process in processes:
+        process.start()
+
+    print(f'NOTICE: not all jobs will start at the same time due to the nature of ranged queries. actual runtime will '
+          f'be closer to 1/{min(args.workers, multiprocessing.cpu_count())}th the early estimate, plus '
+          f'{count_blocks_elapsed}s.')
+    # TODO: if we know how long it takes to count the blocks, and how many workers there are, we can estimate how long
+    #       before a process starts producing results, and resize the jobs to maximize processor usage.
+    #       proper estimation requires differential equations, ugh.
+
+    with progressbar.ProgressBar(max_value=num_blocks) as bar:
+        while True:
+            time.sleep(1)
+            total_completed = sum(completed.value for completed in completeds)
+            bar.update(total_completed)
+            if total_completed == num_blocks:
+                break
+
+    print('joining...')
+    for process in processes:
+        process.join()
+
+    print('compiling results...')
+    all_nodes = get_all_nodes(results)
+
     filter_ = create_filter(args.stairsplus_dump)
-    num_blocks = count_blocks(args)
-    offsets = range(0, num_blocks, args.chunk_size)
-
-    all_nodes = set()
-    with progressbar.ProgressBar() as bar, multiprocessing.Pool(
-        processes=args.workers, initializer=initializer, initargs=(args,)
-    ) as pool:
-        for nodes in bar(pool.imap_unordered(process, offsets),
-                         max_value=len(offsets)):
-            all_nodes.update(nodes)
-
     whitelist = create_whitelist(filter_, all_nodes)
-
-    if args.output:
-        output = args.output
-    else:
-        output = args.stairsplus_dump.parent / 'stairsplus.whitelist'
-
-    with output.open('wb') as fh:
-        print(f'writing whitelist to {output!r}')
-        fh.write(b'\n'.join(sorted(whitelist)))
-
-
-def existing_file(path: str) -> pathlib.Path:
-    file_path = pathlib.Path(path)
-    if not file_path.exists():
-        raise argparse.ArgumentTypeError(f'{path!r} does not exist.')
-    if not file_path.is_file():
-        raise argparse.ArgumentTypeError(f'{path!r} is not a file.')
-    return file_path
+    write_whitelist(args, whitelist)
 
 
 def parse_args(args=None, namespace=None):
@@ -114,7 +73,7 @@ def parse_args(args=None, namespace=None):
     g.add_argument('--pg_connection', '-c')
     g.add_argument('--sqlite_file', '-s', type=existing_file)
     p.add_argument('--chunk_size', type=int, default=64)
-    p.add_argument('--workers', type=int)
+    p.add_argument('--workers', type=int, default=multiprocessing.cpu_count())
     p.add_argument('--output', '-o', type=pathlib.Path)
     p.add_argument('stairsplus_dump', type=existing_file)
     return p.parse_args(args=args, namespace=namespace)
