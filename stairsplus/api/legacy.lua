@@ -9,7 +9,7 @@ if legacy_place_mechanic then
 	local ceil_dirmap = { 20, 23, 22, 21 }
 
 	function api.on_place(itemstack, placer, pointed_thing)
-		if not minetest.is_player(placer) then
+		if not futil.is_player(placer) then
 			return minetest.item_place(itemstack, placer, pointed_thing)
 		end
 

@@ -1,5 +1,5 @@
 fmod.check_version({ year = 2023, month = 2, day = 1 })
-futil.check_version({ year = 2023, month = 2, day = 1 })
+futil.check_version({ year = 2023, month = 11, day = 1 }) -- is_player
 
 stairsplus = fmod.create()
 

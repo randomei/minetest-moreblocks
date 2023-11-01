@@ -280,7 +280,7 @@ end
 
 function station.after_place_node(pos, placer)
 	local meta = minetest.get_meta(pos)
-	if minetest.is_player(placer) then
+	if futil.is_player(placer) then
 		meta:set_string("owner", placer:get_player_name())
 	end
 end
