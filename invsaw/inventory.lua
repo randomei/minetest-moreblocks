@@ -34,20 +34,24 @@ end
 
 minetest.register_allow_player_inventory_action(function(player, action, inv, info)
 	local meta = player:get_meta()
-	if action == "move" and is_stairsplus_inventory(info.from_list) and is_stairsplus_inventory(info.to_list) then
-		return station.allow_inventory_move(
-			meta,
-			inv,
-			info.from_list,
-			info.from_index,
-			info.to_list,
-			info.to_index,
-			info.count,
-			player
-		)
-	elseif action == "move" and is_stairsplus_inventory(info.to_list) then
-		local stack = inv:get_stack(info.from_list, info.from_index)
-		return station.allow_inventory_put(meta, inv, info.to_list, info.to_index, stack, player)
+	if action == "move" then
+		local from_is_stairsplus = is_stairsplus_inventory(info.from_list)
+		local to_is_stairsplus = is_stairsplus_inventory(info.to_list)
+		if from_is_stairsplus and to_is_stairsplus then
+			return station.allow_inventory_move(
+				meta,
+				inv,
+				info.from_list,
+				info.from_index,
+				info.to_list,
+				info.to_index,
+				info.count,
+				player
+			)
+		elseif to_is_stairsplus then
+			local stack = inv:get_stack(info.from_list, info.from_index)
+			return station.allow_inventory_put(meta, inv, info.to_list, info.to_index, stack, player)
+		end
 	elseif action == "put" and is_stairsplus_inventory(info.listname) then
 		return station.allow_inventory_put(meta, inv, info.listname, info.index, info.stack, player)
 	end
