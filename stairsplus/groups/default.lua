@@ -11,4 +11,5 @@ stairsplus.api.register_passthrough_groups({
 	"flammable",
 	"explody",
 	"oddly_breakable_by_hand",
+	"snowy", -- https://github.com/fluxionary/minetest-moreblocks/issues/20 might revisit this later
 })
