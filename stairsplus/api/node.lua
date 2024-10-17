@@ -7,6 +7,7 @@ local table_sort_keys = futil.table.sort_keys
 local S = stairsplus.S
 
 local default_align_style = stairsplus.settings.default_align_style
+local silence_group_overrides = stairsplus.settings.silence_group_overrides
 
 api.nodes_by_shape = {}
 api.shapes_by_node = {}
@@ -175,7 +176,7 @@ function api.register_single(node, shape, overrides, meta)
 		end
 	end
 
-	if not meta.allow_override_groups and overrides.groups then
+	if not silence_group_overrides and not meta.allow_override_groups and overrides.groups then
 		stairsplus.log(
 			"warning",
 			"removing group overrides from %s (was %s, will be %s)",
