@@ -66,7 +66,7 @@ stairsplus.whitelist_mode (whitelist mode) bool false
 # have a better way to communicate this. however, these changes don't cause any actual incompatibility that i'm aware
 # of. if you don't want to fix the mods that use moreblocks to be aware of this fork, you can enable this setting
 # to remove those log messages.
-silence_group_overrides (silence group override log messages) bool false
+stairsplus.silence_group_overrides (silence group override log messages) bool false
 
 [stairsplus_legacy]
 
