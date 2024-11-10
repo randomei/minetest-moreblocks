@@ -48,6 +48,8 @@ local function clean_legacy_fields(fields)
 	fields.on_timer = nil
 	fields.on_receive_fields = nil
 
+	fields.description = nil
+
 	return fields
 end
 

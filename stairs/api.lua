@@ -43,7 +43,7 @@ function stairs.register_stair(subname, node, groups, tiles, description, sounds
 	api.register_single(node, "stair", {
 		groups = groups,
 		tiles = tiles,
-		description = description,
+--		description = description,
 		sounds = sounds,
 	}, meta)
 
@@ -80,7 +80,7 @@ function stairs.register_slab(subname, node, groups, tiles, description, sounds,
 	api.register_single(node, "slab_8", {
 		groups = groups,
 		tiles = tiles,
-		description = description,
+--		description = description,
 		sounds = sounds,
 	}, meta)
 
@@ -126,7 +126,7 @@ function stairs.register_stair_inner(subname, node, groups, tiles, description, 
 	api.register_single(node, "stair_inner", {
 		groups = groups,
 		tiles = tiles,
-		description = full_description or S("Inner @1", description),
+--		description = full_description or S("Inner @1", description),
 		sounds = sounds,
 	}, meta)
 
@@ -172,7 +172,7 @@ function stairs.register_stair_outer(subname, node, groups, tiles, description, 
 	api.register_single(node, "stair_outer", {
 		groups = groups,
 		tiles = tiles,
-		description = full_description or S("Outer @1", description),
+--		description = full_description or S("Outer @1", description),
 		sounds = sounds,
 	}, meta)
 
