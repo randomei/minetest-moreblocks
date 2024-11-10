@@ -187,7 +187,7 @@ function legacy.register_stair_inner(
 	if full_description then
 		description = full_description
 	else
-		description = "Inner " .. description
+		description = stairs.S("Inner ") .. description
 	end
 
 	register_generic(
@@ -247,7 +247,7 @@ function legacy.register_stair_outer(
 	if full_description then
 		description = full_description
 	else
-		description = "Outer " .. description
+		description = stairs.S("Outer ") .. description
 	end
 
 	register_generic(
