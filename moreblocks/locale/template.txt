@@ -1,0 +1,44 @@
+# textdomain: moreblocks
+
+# Copyright © 2011-2020 Hugo Locurcio and contributors
+# This file is distributed under the same license as the More Blocks package.
+# CodeXP <codexp@gmx.net>, 2018.
+
+All-faces @1=
+Sweeper=
+No-faces @1=
+@1 Stair=
+@1 Slab=
+Wooden Tile=
+Centered Wooden Tile=
+Full Wooden Tile=
+Offset Wooden Tile=
+Circle Stone Bricks=
+Stone Bricks=
+Coal Stone Bricks=
+Iron Stone Bricks=
+Stone Tile=
+Split Stone Tile=
+Checker Stone Tile=
+Tar=
+Compressed Dirt=
+Compressed Cobblestone=
+Compressed Desert Cobblestone=
+Plankstone=
+Iron Glass=
+Coal Glass=
+Clean Glass=
+Cactus Brick=
+Cactus Checker=
+Empty Shelf=
+Coal Stone=
+Iron Stone=
+Coal Checker=
+Iron Checker=
+Glow Glass=
+Super Glow Glass=
+Clean Glow Glass=
+Clean Super Glow Glass=
+Copper Patina Block=
+Rope=
+Trap @1=

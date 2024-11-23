@@ -1,4 +1,5 @@
 # textdomain: stairs
-
+Inner @1=Внутренние @1
+Outer @1=Внешние @1
 Inner =Внутренние
 Outer =Внешние

@@ -49,3 +49,16 @@
 @1 1/8 Alt Stair=
 @1 1/4 Alt Stair=
 @1 1/2 Alt Stair=
+Nodes=
+Microblocks=
+Input=
+Max=
+Set=
+Circular Saw=
+(owned by @1)=
+Working on @1=
+Empty=
+create a list of stairsplus nodes, including aliases, to use as a filter in creating a whitelist=
+Stairs+ circular saw=
+Cuttable in the circular saw=
+Nodes cut in the circular saw=

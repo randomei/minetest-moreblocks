@@ -4,12 +4,14 @@ if not stairsplus.has.unified_inventory then
 	return
 end
 
+local S = stairsplus.S
+
 local in_creative_inventory = stairsplus.settings.in_creative_inventory
 
 local api = stairsplus.api
 
 unified_inventory.register_craft_type("stairsplus:circular_saw", {
-	description = "Stairs+ circular saw",
+	description = S("Stairs+ circular saw"),
 	icon = "stairsplus_saw_button.png",
 	width = 1,
 	height = 1,
@@ -18,7 +20,7 @@ unified_inventory.register_craft_type("stairsplus:circular_saw", {
 
 unified_inventory.register_category("stairsplus:cuttable", {
 	symbol = "stairsplus:circular_saw",
-	label = "Cuttable in the circular saw",
+	label = S("Cuttable in the circular saw"),
 	index = 0,
 	items = {},
 })
@@ -26,7 +28,7 @@ unified_inventory.register_category("stairsplus:cuttable", {
 if in_creative_inventory then
 	unified_inventory.register_category("stairsplus:cut_node", {
 		symbol = "stairsplus:circular_saw",
-		label = "Nodes cut in the circular saw",
+		label = S("Nodes cut in the circular saw"),
 		index = 0,
 		items = {},
 	})

@@ -49,3 +49,16 @@
 @1 1/8 Alt Stair=@1 (1/8 альт. ступени)
 @1 1/4 Alt Stair=@1 (1/4 альт. ступени)
 @1 1/2 Alt Stair=@1 (1/2 альт. ступени)
+Nodes=Блоки
+Microblocks=Микроблоки
+Input=Вход
+Max=Макс.
+Set=Уст.
+Circular Saw=Циркулярная пила
+(owned by @1)=(владелец @1)
+Working on @1=Работает над @1
+Empty=Пусто
+create a list of stairsplus nodes, including aliases, to use as a filter in creating a whitelist=создать список блоков stairsplus, включая алиасы, для использования в качестве фильтра для белого списка
+Stairs+ circular saw=Stairs+ циркулярная пила
+Cuttable in the circular saw=Разрезаемые блоки в циркулярной пиле
+Nodes cut in the circular saw=Блоки, получаемые в циркулярной пиле
